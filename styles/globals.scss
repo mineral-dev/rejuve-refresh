@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  @apply bg-primary-100;
+}
+
+body {
+  @apply text-black;
+}
+
+.wrapper {
+  @apply w-full max-w-screen-3xl;
+  @apply mx-auto;
+  @apply px-4 lg:px-8;
+  @apply xl:max-w-screen-xl;
+}
+
+h1,
+.h1 {
+  @apply font-bold;
+  @apply text-2xl lg:text-5xl;
+}
+h2,
+.h2 {
+  @apply font-bold;
+  @apply text-2xl lg:text-4xl;
+}
+h3,
+.h3 {
+  @apply font-bold;
+  @apply text-2xl lg:text-3xl;
+}
+h4,
+.h4 {
+  @apply font-bold;
+  @apply text-xl lg:text-2xl;
+}
+h5,
+.h5 {
+  @apply font-bold;
+  @apply text-lg lg:text-xl;
+}
+
+.prose {
+  @apply prose-h1:text-2xl prose-h1:lg:text-5xl;
+  @apply prose-h2:text-2xl prose-h2:lg:text-4xl;
+  @apply prose-h3:text-2xl prose-h3:lg:text-3xl;
+  @apply prose-h4:text-2xl prose-h4:lg:text-2xl;
+  @apply prose-h5:lg:text-xl;
+
+  @apply prose-headings:mb-4;
+  @apply prose-h5:mb-0;
+  @apply prose-p:mt-0;
+}
+
+.btn,
+[class^="btn-"] {
+  @apply outline-none h-10 xl:h-11 inline-flex items-center justify-center;
+  @apply px-4 xl:px-12 whitespace-nowrap;
+  @apply xl:text-xl font-bold;
+  @apply transition duration-500;
+  @apply ease-out-expo;
+  @apply border;
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}
+
+.btn-primary {
+  @apply border-transparent bg-black text-white rounded-full;
+  @apply hover:bg-transparent hover:text-black hover:border-black;
+
+  &-outline {
+    @apply border-black rounded-full;
+    @apply hover:bg-black hover:text-white;
+  }
+}
