@@ -4,13 +4,14 @@ export default function Header() {
   return (
     <header className="sticky z-10 top-0 bg-primary-200/80 backdrop-blur flex justify-center space-x-8 py-8">
       {links.map((item, key) => (
-        <button
+        <Link
           key={key}
+          href={item.link}
           className="flex flex-col items-center space-y-1 hover:text-primary-900"
         >
           <div className="flex flex-grow">{item.icon}</div>
           <div>{item.caption}</div>
-        </button>
+        </Link>
       ))}
     </header>
   );
@@ -90,7 +91,7 @@ const links = [
       </svg>
     ),
     caption: "Our Menu",
-    link: "/",
+    link: "/menu",
   },
   {
     icon: (

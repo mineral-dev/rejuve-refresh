@@ -1,13 +1,11 @@
 import Image from "next/image";
-import { Inter } from "next/font/google";
 import Logo from "@/components/Logo";
-import md from "markdown-it";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { useRef } from "react";
-
-const inter = Inter({ subsets: ["latin"] });
+import BtnPrev from "@/components/BtnPrev";
+import BtnNext from "@/components/BtnNext";
 
 export default function Home() {
   const swiperRef = useRef();
@@ -98,31 +96,19 @@ export default function Home() {
               </SwiperSlide>
             ))}
           </Swiper>
+          <div className="pointer-events-none absolute z-10 -left-10 -top-1/4 -bottom-1/4 w-1/6 bg-gradient-to-r from-[#FCEADF] to-transparent"></div>
+          <div className="pointer-events-none absolute z-10 -right-10 -top-1/4 -bottom-1/4 w-1/6 bg-gradient-to-l from-[#FCEADF] to-transparent"></div>
           <button 
-            onClick={() => swiperRef?.current?.slidePrev()}
-            className="absolute z-10 top-1/2 left-4"
+              onClick={() => swiperRef?.current?.slidePrev()}
+              className="btn-swiper prev"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="1em"
-              viewBox="0 0 512 512"
-              className="bg-white rounded-full w-10 h-10 shadow-xl"
-            >
-              <path d="M32 256a224 224 0 1 1 448 0A224 224 0 1 1 32 256zm480 0A256 256 0 1 0 0 256a256 256 0 1 0 512 0zM276.7 132.7l-112 112c-6.2 6.2-6.2 16.4 0 22.6l112 112c6.2 6.2 16.4 6.2 22.6 0s6.2-16.4 0-22.6L198.6 256 299.3 155.3c6.2-6.2 6.2-16.4 0-22.6s-16.4-6.2-22.6 0z" />
-            </svg>
+              <BtnPrev />
           </button>
           <button 
-            onClick={() => swiperRef?.current?.slideNext()}
-            className="absolute z-10 top-1/2 right-4"
+              onClick={() => swiperRef?.current?.slideNext()}
+              className="btn-swiper next"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="1em"
-              viewBox="0 0 512 512"
-              className="bg-white rounded-full w-10 h-10 shadow-xl"
-            >
-              <path d="M480 256A224 224 0 1 1 32 256a224 224 0 1 1 448 0zM0 256a256 256 0 1 0 512 0A256 256 0 1 0 0 256zM235.3 379.3l112-112c6.2-6.2 6.2-16.4 0-22.6l-112-112c-6.2-6.2-16.4-6.2-22.6 0s-6.2 16.4 0 22.6L313.4 256 212.7 356.7c-6.2 6.2-6.2 16.4 0 22.6s16.4 6.2 22.6 0z" />
-            </svg>
+              <BtnNext />
           </button>
         </div>
         <div className="flex justify-center mt-12">

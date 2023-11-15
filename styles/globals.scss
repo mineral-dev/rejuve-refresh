@@ -55,14 +55,12 @@ h5,
   @apply prose-p:mt-0;
 }
 
-.btn,
 [class^="btn-"] {
   @apply outline-none h-10 xl:h-11 inline-flex items-center justify-center;
-  @apply px-4 xl:px-12 whitespace-nowrap;
-  @apply xl:text-xl font-bold;
+  @apply whitespace-nowrap;
+  @apply font-bold;
   @apply transition duration-500;
   @apply ease-out-expo;
-  @apply border;
 
   &:disabled {
     @apply opacity-50 cursor-not-allowed;
@@ -70,11 +68,36 @@ h5,
 }
 
 .btn-primary {
-  @apply border-transparent bg-black text-white rounded-full;
+  @apply border border-transparent bg-black text-white rounded-full;
   @apply hover:bg-transparent hover:text-black hover:border-black;
+  @apply xl:text-xl;
+  @apply px-4 xl:px-12;
 
   &-outline {
     @apply border-black rounded-full;
     @apply hover:bg-black hover:text-white;
+  }
+}
+
+.btn-natural {
+  @apply bg-white text-black rounded;
+  @apply hover:bg-primary-600 hover:text-white;
+  @apply px-4 xl:px-6;
+
+  // &-outline {
+  //   @apply border-black rounded-full;
+  //   @apply hover:bg-black hover:text-white;
+  // }
+}
+
+.btn-swiper{
+  @apply absolute z-10 top-1/2 -translate-y-1/2;
+
+  &.prev{
+    @apply left-0;
+  }
+
+  &.next{
+    @apply right-0;
   }
 }
