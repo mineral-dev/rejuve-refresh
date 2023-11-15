@@ -68,14 +68,14 @@ h5,
 }
 
 .btn-primary {
-  @apply border border-transparent bg-black text-white rounded-full;
-  @apply hover:bg-transparent hover:text-black hover:border-black;
-  @apply xl:text-xl;
+  @apply border-2 border-transparent bg-black text-white rounded-full;
+  @apply hover:bg-primary-100 hover:text-black hover:border-black;
   @apply px-4 xl:px-12;
 
   &-outline {
-    @apply border-black rounded-full;
-    @apply hover:bg-black hover:text-white;
+    @apply border-2 border-black rounded-full;
+    @apply hover:bg-primary-100;
+    @apply px-4 xl:px-12;
   }
 }
 
@@ -90,14 +90,19 @@ h5,
   // }
 }
 
-.btn-swiper{
+.btn-sm {
+  @apply xl:h-9 px-4 xl:px-6;
+  @apply text-sm sm:text-sm xl:text-sm;
+}
+
+.btn-swiper {
   @apply absolute z-10 top-1/2 -translate-y-1/2;
 
-  &.prev{
+  &.prev {
     @apply left-0;
   }
 
-  &.next{
+  &.next {
     @apply right-0;
   }
 }

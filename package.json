@@ -12,6 +12,7 @@
     "format:fix": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.19.2",
     "markdown-it": "^13.0.2",
     "next": "13.5.6",
     "react": "^18",

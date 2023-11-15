@@ -178,7 +178,7 @@ const links = [
       </svg>
     ),
     caption: "How to Enjoy",
-    link: "/",
+    link: "/enjoy",
   },
   {
     icon: (
@@ -207,6 +207,6 @@ const links = [
       </svg>
     ),
     caption: "Locations",
-    link: "/",
+    link: "/location",
   },
 ];

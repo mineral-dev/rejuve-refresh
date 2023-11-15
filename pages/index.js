@@ -6,23 +6,20 @@ import "swiper/css";
 import { useRef } from "react";
 import BtnPrev from "@/components/BtnPrev";
 import BtnNext from "@/components/BtnNext";
+import HeaderHero from "@/components/HeaderHero";
+import Banner from "@/components/Banner";
 
 export default function Home() {
   const swiperRef = useRef();
 
   return (
-    <>
-      <section className="wrapper grid grid-cols-2 py-12">
-        <div>
-          <Logo />
-        </div>
-        <div className="flex items-center px-8">
-          <h4>
+    <main>
+      <HeaderHero
+        description={`<h4>
             Re.fresh! by Re.juve is a forward-thinking smoothie bowl bar that
             seeks to redefine convenient meals for the urban populace.
-          </h4>
-        </div>
-      </section>
+          </h4>`}
+      />
 
       <figure className="relative aspect-[16/5]">
         <Image
@@ -39,34 +36,41 @@ export default function Home() {
         ))}
       </section>
 
-      <section className="bg-yellow py-12">
-        <div className="wrapper grid grid-cols-2 place-items-center">
-          <figure className="relative">
-            <Image src={heroCta.image} width={600} height={600} alt="Re.juve" />
-          </figure>
-          <div>
-            <article
-              dangerouslySetInnerHTML={{ __html: heroCta.text }}
-              className="prose"
-            />
+      <Banner
+        data={{
+          bgColor: "bg-yellow",
+          image: "/img/home/hero_cta.png",
+        }}
+      >
+        <article
+          dangerouslySetInnerHTML={{ __html: '<h2>Easy and Nutritious</h2><p>Rooted in the mission to offer easy and nutritious solutions for the bustling city-dweller, Re.Fresh takes pride in the exceptional freshness and high quality ingredients.</p>' }}
+          className="prose"
+        />
 
-            <div className="flex space-x-4 mt-8">
-              {heroCta.cta.map((item, key) => (
-                <Link
-                  href={item.link}
-                  className={
-                    item.type === "primary"
-                      ? "btn-primary"
-                      : "btn-primary-outline"
-                  }
-                >
-                  {item.caption}
-                </Link>
-              ))}
-            </div>
-          </div>
+        <div className="flex space-x-4">
+          {[
+            {
+              caption: "Shop Online",
+              link: "/",
+              type: "primary",
+            },
+            {
+              caption: "Find In Stores",
+              link: "/",
+              type: "",
+            },
+          ].map((item, key) => (
+            <Link
+              href={item.link}
+              className={
+                key %2 === 0 ? "btn-primary" : "btn-primary-outline"
+              }
+            >
+              {item.caption}
+            </Link>
+          ))}
         </div>
-      </section>
+      </Banner>
 
       <section className="bg-[#FFF7E5] py-12 xl:py-24">
         <div className="wrapper flex justify-center">
@@ -98,24 +102,26 @@ export default function Home() {
           </Swiper>
           <div className="pointer-events-none absolute z-10 -left-10 -top-1/4 -bottom-1/4 w-1/6 bg-gradient-to-r from-[#FCEADF] to-transparent"></div>
           <div className="pointer-events-none absolute z-10 -right-10 -top-1/4 -bottom-1/4 w-1/6 bg-gradient-to-l from-[#FCEADF] to-transparent"></div>
-          <button 
-              onClick={() => swiperRef?.current?.slidePrev()}
-              className="btn-swiper prev"
+          <button
+            onClick={() => swiperRef?.current?.slidePrev()}
+            className="btn-swiper prev"
           >
-              <BtnPrev />
+            <BtnPrev />
           </button>
-          <button 
-              onClick={() => swiperRef?.current?.slideNext()}
-              className="btn-swiper next"
+          <button
+            onClick={() => swiperRef?.current?.slideNext()}
+            className="btn-swiper next"
           >
-              <BtnNext />
+            <BtnNext />
           </button>
         </div>
         <div className="flex justify-center mt-12">
-          <Link href="/menu" className="btn-primary">Check our menu</Link>
+          <Link href="/menu" className="btn-primary">
+            Check our menu
+          </Link>
         </div>
       </section>
-    </>
+    </main>
   );
 }
 
@@ -187,23 +193,6 @@ const introduction = [
     text: "<h2>High Quality Ingredients.</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
   },
 ];
-
-const heroCta = {
-  image: "/img/home/hero_cta.png",
-  text: "<h2>Easy and Nutritious</h2><p>Rooted in the mission to offer easy and nutritious solutions for the bustling city-dweller, Re.Fresh takes pride in the exceptional freshness and high quality ingredients.</p>",
-  cta: [
-    {
-      caption: "Shop Online",
-      link: "/",
-      type: "primary",
-    },
-    {
-      caption: "Find In Stores",
-      link: "/",
-      type: "",
-    },
-  ],
-};
 
 const solution =
   "<h2>Solutions for The Bustling City-Dweller</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p><p>Condimentum mattis pellentesque id nibh tortor id aliquet lectus proin. Semper feugiat nibh sed pulvinar. Tempus quam pellentesque nec nam aliquam sem et.</p><p>Ut diam quam nulla porttitor. Integer eget aliquet nibh praesent tristique. Pulvinar proin gravida hendrerit lectus a. Et malesuada fames ac turpis egestas sed tempus. Tortor at risus viverra adipiscing at in. Et ultrices neque ornare aenean euismod elementum nisi quis. Quis viverra nibh cras pulvinar.</p>";
