@@ -7,11 +7,11 @@ export default function LogoRejuve() {
       viewBox="0 0 168 39.684"
     >
       <defs>
-        <clipPath id="clip-path">
+        <clipPath id="clipPath">
           <rect className="fill-current" width="168" height="39.684" />
         </clipPath>
       </defs>
-      <g clip-path="url(#clip-path)">
+      <g clipPath="url(#clipPath)">
         <g transform="translate(0 0)">
           <g>
             <g>

@@ -3,14 +3,15 @@ import Logo from "@/components/Logo";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import BtnPrev from "@/components/BtnPrev";
 import BtnNext from "@/components/BtnNext";
 import HeaderHero from "@/components/HeaderHero";
 import Banner from "@/components/Banner";
 
 export default function Home() {
-  const swiperRef = useRef();
+  const swiperRef = useRef()
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   return (
     <main>
@@ -61,6 +62,7 @@ export default function Home() {
             },
           ].map((item, key) => (
             <Link
+              key={key}
               href={item.link}
               className={
                 key %2 === 0 ? "btn-primary" : "btn-primary-outline"
@@ -92,11 +94,17 @@ export default function Home() {
           <Swiper
             onSwiper={(swiper) => (swiperRef.current = swiper)}
             spaceBetween={50}
-            slidesPerView={2.3}
+            slidesPerView={2}
+            loop={true}
+            centeredSlides={true}
+            onSlideChange={(swiper) => {
+              console.log(swiper)
+              setCurrentIndex(swiper.realIndex)
+            }}
           >
             {favorite.menu.map((item, key) => (
-              <SwiperSlide key={key}>
-                <MenuThumb data={item} />
+              <SwiperSlide key={key} className="!h-auto">
+                <MenuThumb data={item} index={key} currentIndex={currentIndex} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -151,34 +159,46 @@ export function IntroSection({ index, data }) {
   );
 }
 
-export function MenuThumb({ data }) {
+export function MenuThumb({ data, index, currentIndex }) {
+  const isActive = index === currentIndex
+
   return (
-    <section className="MenuThumb relative">
-      <div className="relative z-10 grid grid-cols-2 gap-x-2">
+    <section className="MenuThumb relative !h-full flex items-center">
+      <div className={`relative z-10 ${isActive ? 'grid grid-cols-2 gap-x-2' : ''}`}>
         <figure className="relative aspect-square">
           <Image src={data.image} width={600} height={600} alt="Re.juve" />
         </figure>
-        <div className="flex items-center">
-          <article
-            dangerouslySetInnerHTML={{ __html: data.description }}
-            className="prose prose-headings:text-primary-900 prose-p:text-sm text-center"
-          ></article>
-        </div>
+        {
+          isActive && (
+            <div className="flex flex-col items-center justify-center">
+              <article
+                dangerouslySetInnerHTML={{ __html: data.description }}
+                className="prose prose-headings:text-primary-900 prose-p:text-sm text-center"
+              ></article>
+            </div>
+          )
+        }
       </div>
-      <svg
-        className="absolute z-0 top-0 h-full"
-        xmlns="http://www.w3.org/2000/svg"
-        width="587.311"
-        height="370.565"
-        viewBox="0 0 587.311 370.565"
-      >
-        <path
-          id="flavor-blob-d"
-          d="M123.46,105.379C61.1,91.408-5.5,154.717.361,244.222c7.237,110.463,80.3,104.923,123.1,93s78.5-36.983,118.208-17.028c99.049,49.774,314.9,94.308,332.611-25.76C594.888,154.768,591.523,105.379,560.828,54.3S366.8-20.166,279.983,23.734C214.358,56.916,192.733,120.9,123.46,105.379Z"
-          transform="translate(0 -0.628)"
-          fill="#f8d5c0"
-        />
-      </svg>
+
+      {
+        isActive && (
+          <svg
+            className="absolute z-0 top-0 h-full right-0"
+            xmlns="http://www.w3.org/2000/svg"
+            width="587.311"
+            height="370.565"
+            viewBox="0 0 587.311 370.565"
+          >
+            <path
+              id="flavor-blob-d"
+              d="M123.46,105.379C61.1,91.408-5.5,154.717.361,244.222c7.237,110.463,80.3,104.923,123.1,93s78.5-36.983,118.208-17.028c99.049,49.774,314.9,94.308,332.611-25.76C594.888,154.768,591.523,105.379,560.828,54.3S366.8-20.166,279.983,23.734C214.358,56.916,192.733,120.9,123.46,105.379Z"
+              transform="translate(0 -0.628)"
+              fill="#f8d5c0"
+            />
+          </svg>
+        )
+      }
+     
     </section>
   );
 }
@@ -200,6 +220,21 @@ const solution =
 const favorite = {
   title: "<h2>Enjoy your favorite smoothies</h2>",
   menu: [
+    {
+      image: "/img/fav/bowl_one.png",
+      description:
+        "<h5>Classic Smoothies</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
+    },
+    {
+      image: "/img/fav/bowl_two.png",
+      description:
+        "<h5>Classic Smoothies</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
+    },
+    {
+      image: "/img/fav/bowl_three.png",
+      description:
+        "<h5>Classic Smoothies</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
+    },
     {
       image: "/img/fav/bowl_one.png",
       description:

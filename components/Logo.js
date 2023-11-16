@@ -7,7 +7,7 @@ export default function Logo() {
       viewBox="0 0 306.191 123.543"
     >
       <defs>
-        <clipPath id="clip-path">
+        <clipPath id="clipPath">
           <rect
             id="Rectangle_2523"
             data-name="Rectangle 2523"
@@ -43,7 +43,7 @@ export default function Logo() {
               id="Custom_Size_1"
               data-name="Custom Size – 1"
               transform="translate(29.821 5.654)"
-              clip-path="url(#clip-path)"
+              clipPath="url(#clipPath)"
             >
               <g id="Group_4" data-name="Group 4" transform="translate(0 0)">
                 <g id="Group_2" data-name="Group 2">
