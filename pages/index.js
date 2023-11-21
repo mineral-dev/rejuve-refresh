@@ -22,7 +22,7 @@ export default function Home() {
           </h4>`}
       />
 
-      <figure className="relative aspect-[16/5]">
+      <figure className="relative aspect-square lg:aspect-[16/5]">
         <Image
           src={`/img/home/hero.jpg`}
           fill
@@ -48,7 +48,7 @@ export default function Home() {
             __html:
               "<h2>Easy and Nutritious</h2><p>Rooted in the mission to offer easy and nutritious solutions for the bustling city-dweller, Re.Fresh takes pride in the exceptional freshness and high quality ingredients.</p>",
           }}
-          className="prose"
+          className="prose text-center lg:text-left"
         />
 
         <div className="flex space-x-4">
@@ -129,7 +129,7 @@ export default function Home() {
           </button>
         </div>
         <div className="flex justify-center mt-12">
-          <Link href="/menu" className="btn-primary">
+          <Link href="/menu" className="btn-secondary">
             Check our menu
           </Link>
         </div>
@@ -142,10 +142,10 @@ export function IntroSection({ index, data }) {
   return (
     <section
       className={`wrapper flex gap-8 xl:gap-16 ${
-        index % 2 === 1 ? "flex-row-reverse" : ""
+        index % 2 === 1 ? "flex-col lg:flex-row-reverse" : "flex-col lg:flex-row"
       }`}
     >
-      <figure className="relative aspect-[4/5] w-5/12">
+      <figure className="relative aspect-[4/5] lg:w-5/12">
         <Image
           src={data.image}
           fill
@@ -154,7 +154,7 @@ export function IntroSection({ index, data }) {
           alt="Re.juve"
         />
       </figure>
-      <div className="w-7/12 flex items-center">
+      <div className="lg:w-7/12 flex items-center">
         <article
           dangerouslySetInnerHTML={{ __html: data.text }}
           className="prose"
@@ -168,10 +168,10 @@ export function MenuThumb({ data, index, currentIndex }) {
   const isActive = index === currentIndex;
 
   return (
-    <section className="MenuThumb relative !h-full flex items-center">
+    <section className="MenuThumb relative lg:!h-full flex items-center">
       <div
         className={`relative z-10 ${
-          isActive ? "grid grid-cols-2 gap-x-2" : ""
+          isActive ? "grid lg:grid-cols-2 gap-x-2" : ""
         }`}
       >
         <figure className="relative aspect-square">
@@ -181,27 +181,33 @@ export function MenuThumb({ data, index, currentIndex }) {
           <div className="flex flex-col items-center justify-center">
             <article
               dangerouslySetInnerHTML={{ __html: data.description }}
-              className="prose prose-headings:text-primary-900 prose-p:text-sm text-center"
+              className="prose prose-headings:text-primary-600 prose-p:text-sm text-center"
             ></article>
           </div>
         )}
       </div>
 
       {isActive && (
-        <svg
-          className="absolute z-0 top-0 h-full right-0"
-          xmlns="http://www.w3.org/2000/svg"
-          width="587.311"
-          height="370.565"
-          viewBox="0 0 587.311 370.565"
-        >
-          <path
-            id="flavor-blob-d"
-            d="M123.46,105.379C61.1,91.408-5.5,154.717.361,244.222c7.237,110.463,80.3,104.923,123.1,93s78.5-36.983,118.208-17.028c99.049,49.774,314.9,94.308,332.611-25.76C594.888,154.768,591.523,105.379,560.828,54.3S366.8-20.166,279.983,23.734C214.358,56.916,192.733,120.9,123.46,105.379Z"
-            transform="translate(0 -0.628)"
-            fill="#f8d5c0"
-          />
-        </svg>
+        <>
+          <svg className="lg:hidden absolute z-0 top-0 left-1/2 -translate-x-1/2" xmlns="http://www.w3.org/2000/svg" width="231.001" height="261.801" viewBox="0 0 231.001 261.801">
+            <path id="svgexport-14" d="M223.721,52.126C205.7,9.612,169.171.628,83.8.628,17.366.628,15.823,45.156,18.633,57.1c8.872,37.694,10.022,57.391-3.8,83.416C-13.46,193.77-2.28,252.448,57.039,257.459c97.088,8.2,106.926,6.279,142.436-5.934,20.456-7.035,37.553-44.279,24.245-69.946C192.115,120.621,250.578,115.487,223.721,52.126Z" transform="translate(0 -0.628)" fill="#f8d5c0"/>
+          </svg>
+          <svg
+            className="hidden lg:block absolute z-0 top-0 h-full right-0"
+            xmlns="http://www.w3.org/2000/svg"
+            width="587.311"
+            height="370.565"
+            viewBox="0 0 587.311 370.565"
+          >
+            <path
+              id="flavor-blob-d"
+              d="M123.46,105.379C61.1,91.408-5.5,154.717.361,244.222c7.237,110.463,80.3,104.923,123.1,93s78.5-36.983,118.208-17.028c99.049,49.774,314.9,94.308,332.611-25.76C594.888,154.768,591.523,105.379,560.828,54.3S366.8-20.166,279.983,23.734C214.358,56.916,192.733,120.9,123.46,105.379Z"
+              transform="translate(0 -0.628)"
+              fill="#f8d5c0"
+            />
+          </svg>
+        </>
+        
       )}
     </section>
   );

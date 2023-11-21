@@ -14,7 +14,7 @@ export default function Location() {
         <div className="wrapper py-12">
           <h1 className="text-primary-900">Our Locations</h1>
 
-          <div className="grid grid-cols-3 gap-8 mt-12">
+          <div className="flex flex-col-reverse lg:grid lg:grid-cols-3 gap-8 mt-12">
             <section>
               <div className="grid gap-y-2 divide-y divide-primary-200">
                 {stores.map((item, key) => (
@@ -22,7 +22,7 @@ export default function Location() {
                 ))}
               </div>
             </section>
-            <section className="col-span-2 rounded-xl">
+            <section className="col-span-2 rounded-xl aspect-square lg:aspect-video">
               <MapContainer location={location} />
             </section>
           </div>

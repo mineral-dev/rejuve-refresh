@@ -206,7 +206,7 @@ export default function Header() {
         {links.map((item, key) => (
           <button
             key={key}
-            onClick={handleHeaderLink}
+            onClick={() => router.push(item.link)}
             className={`relative flex flex-col items-center space-y-1 hover:text-primary-600 ${
               asPath === item.link ? "text-primary-600" : ""
             }`}

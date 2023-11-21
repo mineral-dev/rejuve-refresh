@@ -8,6 +8,7 @@ export default function BannerFooter() {
       data={{
         bgColor: "bg-[#F8D5C0]",
         image: "/img/banner/bowl.png",
+        type:"image-top",
       }}
     >
       <LogoRefresh />
@@ -17,7 +18,7 @@ export default function BannerFooter() {
           __html:
             "<p>Rooted in the mission to offer easy and nutritious solutions for the bustling city-dweller, Re.Fresh takes pride in the exceptional freshness and high quality ingredients.</p>",
         }}
-        className="prose"
+        className="prose text-center lg:text-left"
       />
 
       <div>
