@@ -1,50 +1,108 @@
-import FooterBanner from "@/components/FooterBanner";
+import BannerFooter from "@/components/FooterBanner";
 import HeaderHero from "@/components/HeaderHero";
-import Image from "next/image";
+import ImageFill from "@/components/ImageFill";
+import db from "@/db/db";
+import { useGetEnjoyQuery } from "@/store/services/api";
+import setAttachEnjoy from "@/utils/setAttchDbEnjoy";
+import MarkdownIt from "markdown-it";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Enjoy() {
+  const [post, setPost] = useState({})
+  const { data, isError, error, loading } = useGetEnjoyQuery()
+
+  useEffect(()=>{
+    if (!error && data?.attributes) {
+      setPost(data?.attributes)
+      db.get('enjoy').catch(async (e)=>{
+        const body = {
+          _id: 'enjoy',
+          data: data?.attributes,
+          _attachments: await setAttachEnjoy(data?.attributes)
+        }
+        db.put(body).catch((e)=>console.warn(e))
+      });
+    }else{
+      db.get('enjoy').then(function(doc) {
+        setPost(doc?.data)
+      }).catch((e)=>console.warn(e));
+    }
+  },[data, isError, error])
+
+  console.log(post)
   return (
     <main className="flex-grow flex flex-col justify-between">
-      <HeaderHero
-        title="How to Enjoy"
-        description={`<h4>Enjoy your favorite smoothies and dishes by visiting our local stores,
-          or having them delivered to your doorstep. It's all about what works for you!</h4>`}
-      />
+      {
+        post?.Intro &&
+        <HeaderHero
+          title={post?.Intro?.Title}
+          image={post?.Intro?.Image?.data?.attributes}
+          description={MarkdownIt().render(post?.Intro?.Description)}
+        />
+      }
 
-      <section className="bg-primary-100 pb-12 xl:pb-24">
-        <div className="wrapper grid lg:grid-cols-2 gap-4">
-          {cards.map((item, key) => (
-            <Card key={key} data={item} />
-          ))}
-        </div>
-      </section>
+      {
+        (post?.Showcase && post?.Showcase?.length > 0 ) && (
+          <section className="bg-primary-100 pb-12 xl:pb-24">
+            <div className="wrapper grid lg:grid-cols-2 gap-4">
+              {post?.Showcase.map((item, key) => (
+                <Card key={key} data={item} />
+              ))}
+            </div>
+          </section>
+        )
+      }
 
-      <FooterBanner />
+      {
+        post?.Banner &&
+        <BannerFooter data={post?.Banner} />
+      }
     </main>
   );
 }
 
-export function Card({ data }) {
+export function Card({ data, dbtable }) {
   return (
     <section className="Card">
-      <figure className="relative aspect-video rounded-t-xl overflow-hidden hidden lg:block">
-        <Image
-          src={data.image}
-          fill
-          style={{ objectFit: "cover" }}
-          alt="Re.juve"
-        />
-      </figure>
-      <div className="bg-[#F8D5C0] flex flex-col items-center space-y-4 text-center rounded-t-xl lg:rounded-t-0 rounded-b-xl p-8">
-          {data.icon}
-        <article
-          dangerouslySetInnerHTML={{ __html: data.description }}
-          className="prose prose-sm"
-        />
-        <Link href={data.cta.link} className="btn-primary">
-          {data.cta.caption}
-        </Link>
+      {
+        data.Image?.data?.attributes &&
+        <figure className="relative aspect-video rounded-t-xl overflow-hidden hidden lg:block">
+          <ImageFill 
+            data={data.Image?.data?.attributes} 
+            dbtable={dbtable}
+            style={{ objectFit: "cover" }}
+          />
+        </figure>
+      }
+      <div style={{backgroundColor: data?.ColorBg ? data?.ColorBg : '#F8D5C0'}} className="flex flex-col items-center space-y-4 text-center rounded-t-xl lg:rounded-t-0 rounded-b-xl p-8">
+        {
+          data?.Icon?.data?.attributes &&
+          <figure className="relative w-24 h-24">
+            <ImageFill
+              style={{ objectFit: "contain"}}
+              data={data?.Icon?.data?.attributes}
+              dbtable={dbtable}
+            />
+          </figure>
+        }
+        {
+          data.Title &&
+          <div className="h5">{data?.Title}</div>
+        }
+        {
+          data.Description &&
+          <article
+            dangerouslySetInnerHTML={{ __html: data.Description }}
+            className="prose prose-sm"
+          />
+        }
+        {
+          data.Cta?.Link &&
+          <Link href={data.Cta?.Link} className="btn-primary">
+            {data.Cta?.Caption}
+          </Link>
+        }
       </div>
     </section>
   );

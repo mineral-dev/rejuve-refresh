@@ -34,6 +34,13 @@ export const rejuveApi = createApi({
          }),
          transformResponse: (response, meta, arg) => response?.data,
          transformErrorResponse: (response, meta, arg) => response.status,
+      }),
+      getEnjoy: build.query({
+         query: () => ({
+            url: `/api/how-to-enjoy?populate[0]=Intro&populate[1]=Intro.Image&populate[2]=Showcase&populate[3]=Showcase.Icon&populate[4]=Showcase.Image&populate[5]=Showcase.Cta&populate[6]=Banner&populate[7]=Banner.Icon&populate[8]=Banner.Image&populate[9]=Banner.Cta`,
+         }),
+         transformResponse: (response, meta, arg) => response?.data,
+         transformErrorResponse: (response, meta, arg) => response.status,
       })
    }),
 })
@@ -42,5 +49,6 @@ export const {
    useGetMenusQuery,
    useGetCategoriesQuery,
    useGetFnbQuery,
-   useGetHomepageQuery
+   useGetHomepageQuery,
+   useGetEnjoyQuery
 } = rejuveApi

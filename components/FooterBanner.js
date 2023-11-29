@@ -1,31 +1,37 @@
+import MarkdownIt from "markdown-it";
 import Link from "next/link";
 import Banner from "./Banner";
 import LogoRefresh from "./LogoRefresh";
 
-export default function BannerFooter() {
+export default function BannerFooter({data, dbtable}) {
+  console.log(data,'data')
   return (
     <Banner
       data={{
-        bgColor: "bg-[#F8D5C0]",
-        image: "/img/banner/bowl.png",
-        type:"image-top",
+        bgColor: data?.ColorBg ? data?.ColorBg : "#F8D5C0",
+        image: data?.Image?.data?.attributes,
+        type: "image-top",
+        dbtable: dbtable
       }}
     >
       <LogoRefresh />
 
-      <article
-        dangerouslySetInnerHTML={{
-          __html:
-            "<p>Rooted in the mission to offer easy and nutritious solutions for the bustling city-dweller, Re.Fresh takes pride in the exceptional freshness and high quality ingredients.</p>",
-        }}
-        className="prose text-center lg:text-left"
-      />
+      {
+        data?.Description &&
+        <article
+          dangerouslySetInnerHTML={{__html: MarkdownIt().render(data?.Description)}}
+          className="prose text-center lg:text-left"
+        />
+      }
 
-      <div>
-        <Link href="/menu" className="btn-primary">
-          Check our Menu
-        </Link>
-      </div>
+      {
+        data?.Cta?.Link &&
+        <div>
+          <Link href={data?.Cta?.Link} className="btn-primary">
+            {data?.Cta?.Caption}
+          </Link>
+        </div>
+      }
     </Banner>
   );
 }

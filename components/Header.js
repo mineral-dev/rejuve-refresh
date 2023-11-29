@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import ImageHandle from "./ImageFill";
+import ImageFill from "./ImageFill";
 
 export default function Header() {
   const menus = useSelector(memoizeMenus)
@@ -117,7 +117,7 @@ export default function Header() {
                       {
                         item.attributes?.Image?.data?.attributes &&
                         <figure className="flex flex-grow relative aspect-square">
-                          <ImageHandle
+                          <ImageFill
                             style={{ objectFit: "contain"}}
                             data={item.attributes?.Image?.data?.attributes}
                             dbtable="menus"
@@ -205,7 +205,7 @@ export default function Header() {
                                     {
                                       categoryChild.attributes?.Icon?.data?.attributes &&
                                       <figure className="relative aspect-[3/2] w-full flex items-center">
-                                        <ImageHandle
+                                        <ImageFill
                                           style={{ objectFit: "contain"}}
                                           data={categoryChild.attributes?.Icon?.data?.attributes}
                                           dbtable="menus"
@@ -263,7 +263,7 @@ export default function Header() {
               {
                 item.attributes?.Image?.data?.attributes &&
                 <figure className="flex flex-grow relative aspect-[3/2] w-full">
-                  <ImageHandle
+                  <ImageFill
                     style={{ objectFit: "scale-down", filter: hover && item?.attributes?.title === hover?.name ? 'brightness(0) saturate(100%) invert(25%) sepia(42%) saturate(2420%) hue-rotate(277deg) brightness(94%) contrast(87%)' : ''}}
                     data={item.attributes?.Image?.data?.attributes}
                     dbtable="menus"
