@@ -62,7 +62,7 @@ const cards = [
         <g id="Group_31064" data-name="Group 31064" transform="translate(0 -0.445)">
           <circle id="Ellipse_508" data-name="Ellipse 508" cx="50" cy="50" r="50" transform="translate(0 0.445)" fill="#963588"/>
           <g id="Group_31201" data-name="Group 31201" transform="translate(19.14 23.743)">
-            <g id="Group_31200" data-name="Group 31200" clip-path="url(#clip-path)">
+            <g id="Group_31200" data-name="Group 31200" clipPath="url(#clip-path)">
               <path id="Path_16153" data-name="Path 16153" d="M18.706,41.037H14.678a.751.751,0,0,1-.78-.78v-8.9A6.5,6.5,0,0,0,7.792,24.8,6.372,6.372,0,0,0,1.1,31.162v15.4a3.563,3.563,0,0,0,3.573,3.573h7.991a.751.751,0,0,1,.78.78V59.1a2.773,2.773,0,0,0,2.794,2.794h3.573A2.773,2.773,0,0,0,22.6,59.1V45a3.844,3.844,0,0,0-3.9-3.963" transform="translate(-0.385 -8.683)" fill="#e9d8e8"/>
               <path id="Path_16154" data-name="Path 16154" d="M7.147,0A7.147,7.147,0,1,1,0,7.147,7.147,7.147,0,0,1,7.147,0" fill="#e9d8e8"/>
               <path id="Path_16155" data-name="Path 16155" d="M75.9,24.8a6.377,6.377,0,0,0-6.367,6.367V40.2a.751.751,0,0,1-.78.78H64.728A4.048,4.048,0,0,0,60.7,45.005V59.168a2.773,2.773,0,0,0,2.794,2.794h3.573a2.773,2.773,0,0,0,2.794-2.794V50.982a.751.751,0,0,1,.78-.78h7.991A3.563,3.563,0,0,0,82.2,46.629V31.167A6.281,6.281,0,0,0,75.9,24.8" transform="translate(-21.264 -8.688)" fill="#e9d8e8"/>

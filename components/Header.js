@@ -1,20 +1,29 @@
+import db from "@/db/db";
+import { useGetMenusQuery } from "@/store/services/api";
+import { memoizeMenus, setMenus } from "@/store/slice/main";
+import setAttachDbMenu from "@/utils/setAttachDbMenu";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
-import { categories } from "@/data/categories";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import ImageHandle from "./ImageFill";
 
 export default function Header() {
+  const menus = useSelector(memoizeMenus)
+  const dispacth = useDispatch()
   const router = useRouter();
   const asPath = router.asPath;
   const [isMobileMenu, setIsMobileMenu] = useState(false);
   const [isFoodMenu, setIsFoodMenu] = useState(false);
+  const [hover, setHover] = useState({ status: false, name: ''});
+  const { data, isError, error } = useGetMenusQuery()
 
   const handleHeaderLink = (e) => {
     e.preventDefault();
     console.log(e);
   };
-
+  
   const handleMobileMenu = () => {
     setIsMobileMenu(!isMobileMenu);
     if(!isMobileMenu){
@@ -28,7 +37,24 @@ export default function Header() {
     setIsFoodMenu(!isFoodMenu);
   };
 
-  console.log(asPath);
+  useEffect(()=> {
+    if (!isError && data?.attributes?.items?.data && data?.attributes?.items?.data?.length > 0) {
+      dispacth(setMenus(data?.attributes?.items?.data))
+      db.get('menus').catch(async (e)=>{
+        console.log(await setAttachDbMenu(data?.attributes?.items?.data),'jsjsj')
+        const body = {
+          _id: 'menus',
+          data: data?.attributes?.items?.data,
+          _attachments: await setAttachDbMenu(data?.attributes?.items?.data)
+        }
+        db.put(body).catch((e)=>console.warn(e))
+      });
+    }else{
+      db.get('menus').then(function(doc) {
+        dispacth(setMenus(doc?.data))
+      }).catch((e)=>console.warn(e));
+    }
+  },[data, isError])
 
   return (
     <>
@@ -75,25 +101,37 @@ export default function Header() {
               }}
               className="MobileMenu bg-primary-100 grid divide-y divide-black/10 max-h-[calc(100dvh_-_44px)] overflow-y-auto"
             >
-              {links.map((item, key) => (
-                <div  key={key}>
+              {menus.map((item, key) => (
+                <div key={key} onClick={handleFoodMenu}>
                   <div
                     className={`relative flex items-center justify-between pl-4 ${
-                      item.hasChildren ? "" : "h-11"
+                      item.attributes?.FnbCategories?.data?.length > 0 ? "" : "h-11"
                     }`}
                   >
-                    <div onClick={() => {
-                      router.push(item.link)
-                      handleMobileMenu()
-                    }} className="flex items-center space-x-2 cursor-pointer">
+                    <Link
+                      href={item.attributes?.FnbCategories?.data?.length == 0 ? item?.attributes?.url : '#'}
+                      onClick={()=> handleMobileMenu()}
+                      className="flex items-center space-x-2 cursor-pointer"
+                    >
                       <span className="w-8 flex justify-center [&>svg]:h-7">
-                        {item.icon}
+                      {
+                        item.attributes?.Image?.data?.attributes &&
+                        <figure className="flex flex-grow relative aspect-square">
+                          <ImageHandle
+                            style={{ objectFit: "contain"}}
+                            data={item.attributes?.Image?.data?.attributes}
+                            dbtable="menus"
+                          />
+                        </figure>
+                      }
                       </span>
-                      <span className="font-bold">{item.caption}</span>
-                    </div>
-                    {item.hasChildren && (
+                      {
+                        item?.attributes?.title &&
+                        <span className="font-bold">{item?.attributes?.title}</span>
+                      }
+                    </Link>
+                    {(item.attributes?.FnbCategories?.data?.length > 0 || item.attributes?.items) && (
                       <button
-                        onClick={handleFoodMenu}
                         className="w-11 h-11 flex items-center justify-center"
                       >
                         <svg
@@ -116,7 +154,7 @@ export default function Header() {
                     )}
                   </div>
                   <AnimatePresence key={key}>
-                    {item.hasChildren && isFoodMenu && (
+                    {item.attributes?.FnbCategories?.data?.length > 0 && isFoodMenu && (
                       <motion.section
                         initial={{
                           opacity: 0,
@@ -135,41 +173,50 @@ export default function Header() {
                         }}
                         className="grid gap-4 p-4"
                       >
-                        {categories?.map((item, key) => (
-                          <>
-                            <p className="font-bold">{item.title}</p>
-                            <div className="grid grid-cols-2 gap-4">
-                              {item.children.map((categoryChild, key2) => (
+                        {item.attributes?.FnbCategories?.data?.map((cat, key) => (
+                          <div key={key}>
+                            <p className="font-bold">{cat.attributes?.Title}</p>
+                            <div className="grid grid-cols-2 gap-4 mt-2">
+                              {cat.attributes?.fnbMenus?.data?.map((categoryChild, key2) => (
                                 <button
                                   key={key2}
                                   className={`bg-white rounded-lg shadow-xl flex ${
-                                    item.slug === "discover"
+                                    cat?.attributes?.Template === "Discover"
                                       ? "p-4"
                                       : "items-center p-4"
                                   }`}
                                 >
                                   <span
                                     className={`${
-                                      item.slug === "discover"
-                                        ? "grid place-items-center gap-y-6 w-full"
+                                      cat?.attributes?.Template === "Discover"
+                                        ? "flex flex-col items-center space-y-6 w-full"
                                         : "flex items-center space-x-4"
                                     }`}
                                   >
                                     <span
                                       className={`font-bold block text-primary-900 text-sm ${
-                                        item.slug === "discover"
+                                        cat.attributes?.Template === "Discover"
                                           ? "text-center"
                                           : "text-left"
                                       }`}
                                     >
-                                      {categoryChild.title}
+                                      {categoryChild.attributes?.Title}
                                     </span>
-                                    <span>{categoryChild.icon}</span>
+                                    {
+                                      categoryChild.attributes?.Icon?.data?.attributes &&
+                                      <figure className="relative aspect-[3/2] w-full flex items-center">
+                                        <ImageHandle
+                                          style={{ objectFit: "contain"}}
+                                          data={categoryChild.attributes?.Icon?.data?.attributes}
+                                          dbtable="menus"
+                                        />
+                                      </figure>
+                                    }
                                   </span>
                                 </button>
                               ))}
                             </div>
-                          </>
+                          </div>
                         ))}
                       </motion.section>
                     )}
@@ -203,20 +250,31 @@ export default function Header() {
       </header>
 
       <header className="sticky z-10 top-0 bg-primary-200/80 backdrop-blur hidden lg:flex justify-center space-x-8 py-8">
-        {links.map((item, key) => (
-          <button
+        {menus.map((item, key) => (
+          <Link
             key={key}
-            onClick={() => router.push(item.link)}
-            className={`relative flex flex-col items-center space-y-1 hover:text-primary-600 ${
-              asPath === item.link ? "text-primary-600" : ""
+            href={item.attributes?.url}
+            className={`relative flex flex-col items-center space-y-1 hover:text-primary-600 group ${
+              asPath === item.attributes?.url ? "text-primary-600" : ""
             }`}
+            onMouseEnter={()=> setHover({status: true, name: item?.attributes?.title})}
+            onMouseLeave={()=> setHover({status: false, name: ''})}
           >
-            <span className="flex flex-grow">{item.icon}</span>
-            <span className="font-bold">{item.caption}</span>
-            {asPath === item.link && (
+              {
+                item.attributes?.Image?.data?.attributes &&
+                <figure className="flex flex-grow relative aspect-[3/2] w-full">
+                  <ImageHandle
+                    style={{ objectFit: "scale-down", filter: hover && item?.attributes?.title === hover?.name ? 'brightness(0) saturate(100%) invert(25%) sepia(42%) saturate(2420%) hue-rotate(277deg) brightness(94%) contrast(87%)' : ''}}
+                    data={item.attributes?.Image?.data?.attributes}
+                    dbtable="menus"
+                  />
+                </figure>
+              }
+            <span className="font-bold">{item.attributes?.title}</span>
+            {asPath === item.attributes?.url && (
               <span className="absolute -bottom-4 content-[''] w-2 h-2 bg-primary-600 rounded-full"></span>
             )}
-          </button>
+          </Link>
         ))}
       </header>
     </>

@@ -1,19 +1,75 @@
-import Link from "next/link";
-import { Swiper, SwiperSlide } from "swiper/react";
+import ImageHandle from "@/components/ImageFill";
+import SlideMenus from "@/components/SlideMenus";
+import db from "@/db/db";
+import { useGetCategoriesQuery, useGetFnbQuery } from "@/store/services/api";
+import setAttachFnb from "@/utils/setAttchDbFnb";
+import { useEffect, useRef, useState } from "react";
 import "swiper/css";
-import { EffectCoverflow, Pagination } from "swiper/modules";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
-import { useRef, useState } from "react";
-import Image from "next/image";
-import BtnPrev from "@/components/BtnPrev";
-import BtnNext from "@/components/BtnNext";
-import { categories } from "@/data/categories";
 
 export default function Menu() {
   const swiperRef = useRef();
-  const [activeMenu, setActiveMenu] = useState(categories[0].slug);
+  const [activeMenu, setActiveMenu] = useState({});
+  const [activeMenuChildern, setActiveMenuChildern] = useState({});
+  const [categories, setCategories] = useState([])
+  const [fnbMenus, setFnbMenus] = useState([])
+  const [slideMenu, setSlideMenu] = useState([])
+  const { data: dataCat, isError: isErrorCat, error: errorCat } = useGetCategoriesQuery()
+  const { data: dataFnb, isError: isErrorFnb, error: errorFnb } = useGetFnbQuery()
 
+  useEffect(()=> {
+    if (!errorCat && dataCat?.length > 0) {
+      setCategories(dataCat)
+      setActiveMenu(dataCat[0])
+      setActiveMenuChildern(dataCat[0]?.attributes?.fnbMenus?.data[0])
+      db.get('categories').catch(async (e)=>{
+        const body = {
+          _id: 'categories',
+          data: dataCat,
+        }
+        db.put(body).catch((e)=>console.warn(e))
+      });
+    }else{
+      db.get('categories').then(function(doc) {
+        setCategories(doc?.data)
+        setActiveMenu(doc?.data[0])
+        setActiveMenuChildern(doc?.data[0]?.attributes?.fnbMenus?.data[0])
+      }).catch((e)=>console.warn(e));
+    }
+  },[dataCat, errorCat, isErrorCat])
+
+  useEffect(()=> {
+    if (!errorFnb && dataFnb?.length > 0) {
+      setFnbMenus(dataFnb)
+      db.get('fnb').catch(async (e)=>{
+        const body = {
+          _id: 'fnb',
+          data: dataFnb,
+          _attachments: await setAttachFnb(dataFnb)
+        }
+        db.put(body).catch((e)=>console.warn(e))
+      });
+    }else{
+      db.get('fnb').then(function(doc) {
+        setFnbMenus(doc?.data)
+      }).catch((e)=>console.warn(e));
+    }
+  },[dataFnb, errorFnb, isErrorFnb])
+
+  useEffect(()=> {
+    if (fnbMenus?.length > 0) {
+      const result = fnbMenus.filter((item)=> item.Slug === activeMenuChildern?.attributes?.Slug)
+      if (result?.length > 0) {
+        setSlideMenu(result)
+      }
+    }
+
+    if (activeMenuChildern?.attributes?.Slug === 'all') {
+      setSlideMenu(fnbMenus)
+    }
+  },[activeMenuChildern, fnbMenus])
+  // console.log(activeMenuChildern, fnbMenus, errorCat, isErrorCat)
   return (
     <main className="flex-grow bg-[#2C1438]">
       <section className="Category bg-primary-200 hidden lg:grid grid-cols-4 border-t-4 border-primary-600">
@@ -21,13 +77,13 @@ export default function Menu() {
           <div className="grid">
             {categories.map((item, key) => (
               <button
-                onClick={() => setActiveMenu(item.slug)}
+                onClick={() => setActiveMenu(item)}
                 key={key}
                 className={`flex items-center justify-between text-black text-left h-14 px-8 ${
-                  activeMenu === item.slug ? "bg-primary-200" : ""
+                  activeMenu.attributes?.Slug === item.attributes?.Slug ? "bg-primary-200" : ""
                 }`}
               >
-                <span className="font-bold">{item.title}</span>
+                <span className="font-bold">{item.attributes?.Title}</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="7.576"
@@ -48,99 +104,48 @@ export default function Menu() {
               </button>
             ))}
           </div>
-          <button className="btn-secondary mx-4 mb-4">Show All</button>
+          <button onClick={()=> setActiveMenuChildern({attributes: {Slug: 'all', Title: 'All'}})} className="btn-secondary mx-4 mb-4">Show All</button>
         </aside>
         <main
-          className={`col-span-3 min-h-[300px] grid gap-4 p-6 ${
-            activeMenu === "discover" ? "grid-cols-4" : "grid-cols-4"
-          }`}
+          className={`col-span-3 min-h-[300px] grid gap-4 p-6 grid-cols-4`}
         >
-          {categories
-            .filter((item) => item.slug === activeMenu)[0]
-            ?.children.map((item, key) => (
+          { 
+            activeMenu?.attributes?.fnbMenus?.data &&
+            activeMenu?.attributes?.fnbMenus?.data?.map((item, key) => (
               <button
+                key={key}
                 className={`bg-white rounded-lg transition ease-out-expo duration-500 hover:scale-105 hover:shadow-xl flex justify-center ${
-                  activeMenu === "discover" ? "py-4" : "items-center px-2"
+                  activeMenu.attributes?.Template === "Discover" ? "py-4 px-2" : "items-center px-2"
                 }`}
+                onClick={()=> setActiveMenuChildern(item)}
               >
                 <span
-                  className={`${
-                    activeMenu === "discover"
-                      ? "grid place-items-center gap-y-6"
+                  className={`w-full h-full ${
+                    activeMenu.attributes?.Template === "Discover"
+                      ? "flex flex-col items-center space-y-6"
                       : "flex items-center space-x-4"
                   }`}
                 >
-                  <span className="font-bold flex items-center text-center">
-                    {item.title}
+                  <span className="font-bold flex items-center text-center overflow-hidden max-h-14 h-full">
+                    {item.attributes?.Title}
                   </span>
-                  <span className="flex items-center">{item.icon}</span>
+                  {
+                    item.attributes?.Icon?.data?.attributes?.url &&
+                      <figure className="relative aspect-[3/2] w-full flex items-center">
+                        <ImageHandle
+                          style={{ objectFit: "contain"}}
+                          data={item.attributes?.Icon?.data?.attributes}
+                          dbtable="fnb"
+                        />
+                      </figure>
+                  }
                 </span>
               </button>
-            ))}
+            ))
+          }
         </main>
       </section>
-      <section className="MenuSwiper relative my-12">
-        <Swiper
-          onSwiper={(swiper) => (swiperRef.current = swiper)}
-          slidesPerView={1.35}
-          effect={"coverflow"}
-          grabCursor={true}
-          centeredSlides={true}
-          coverflowEffect={{
-            rotate: 50,
-            stretch: 0,
-            depth: 100,
-            modifier: 1,
-            slideShadows: true,
-          }}
-          pagination={true}
-          modules={[EffectCoverflow, Pagination]}
-        >
-          {sliderMenu.map((item, key) => (
-            <SwiperSlide key={key}>
-              <figure className="relative">
-                <Image
-                  src={item.image}
-                  width={1000}
-                  height={1000}
-                  className="w-full rounded-xl"
-                  alt="Re.juve"
-                />
-              </figure>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-        <button
-          onClick={() => swiperRef?.current?.slidePrev()}
-          className="btn-swiper prev"
-        >
-          <BtnPrev />
-        </button>
-        <button
-          onClick={() => swiperRef?.current?.slideNext()}
-          className="btn-swiper next"
-        >
-          <BtnNext />
-        </button>
-      </section>
+      <SlideMenus data={slideMenu} imageDb="fnb" />
     </main>
   );
 }
-
-const sliderMenu = [
-  {
-    image: "/img/menu/menu_one.jpg",
-  },
-  {
-    image: "/img/menu/menu_one.jpg",
-  },
-  {
-    image: "/img/menu/menu_one.jpg",
-  },
-  {
-    image: "/img/menu/menu_one.jpg",
-  },
-  {
-    image: "/img/menu/menu_one.jpg",
-  },
-];

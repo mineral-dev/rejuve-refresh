@@ -1,12 +1,11 @@
-import Image from "next/image";
-import Link from "next/link";
+import ImageHandle from "./ImageFill";
 
 export default function Banner({ children, data }) {
   return (
-    <section className={`${data.bgColor} py-12`}>
+    <section className={`py-12`} style={{backgroundColor: data?.bgColor}}>
       <div className={`wrapper flex lg:grid lg:grid-cols-2 gap-x-8 place-items-center ${data.type === 'image-top' ? 'flex-col space-y-4' : 'flex-col-reverse'}`}>
-        <figure className="relative">
-          <Image src={data.image} width={500} height={500} alt="Re.juve" />
+        <figure className="relative w-full aspect-[4/3]">
+          <ImageHandle data={data.image} dbtable="homepage" />
         </figure>
         <div className="flex flex-col items-center lg:grid gap-y-4">{children}</div>
       </div>
