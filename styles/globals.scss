@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  @apply bg-primary-100;
+}
+
+body {
+  @apply text-black;
+}
+
+.wrapper {
+  @apply w-full max-w-screen-3xl;
+  @apply mx-auto;
+  @apply px-4 lg:px-8;
+  @apply xl:max-w-screen-xl;
+}
+
+h1,
+.h1 {
+  @apply font-bold;
+  @apply text-2xl lg:text-5xl;
+}
+h2,
+.h2 {
+  @apply font-bold;
+  @apply text-2xl lg:text-4xl;
+}
+h3,
+.h3 {
+  @apply font-bold;
+  @apply text-2xl lg:text-3xl;
+}
+h4,
+.h4 {
+  @apply font-bold;
+  @apply text-xl lg:text-2xl;
+}
+h5,
+.h5 {
+  @apply font-bold;
+  @apply text-lg lg:text-xl;
+}
+
+.prose {
+  @apply prose-h1:text-2xl prose-h1:lg:text-5xl;
+  @apply prose-h2:text-2xl prose-h2:lg:text-4xl;
+  @apply prose-h3:text-2xl prose-h3:lg:text-3xl;
+  @apply prose-h4:text-2xl prose-h4:lg:text-2xl;
+  @apply prose-h5:lg:text-xl;
+
+  @apply prose-headings:mb-4;
+  @apply prose-h5:mb-0;
+  @apply prose-p:mt-0;
+}
+
+[class^="btn-"] {
+  @apply outline-none h-10 xl:h-11 inline-flex items-center justify-center;
+  @apply whitespace-nowrap;
+  @apply font-bold;
+  @apply transition duration-500;
+  @apply ease-out-expo;
+
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+}
+
+.btn-primary {
+  @apply border-2 border-transparent bg-black text-white rounded-full;
+  @apply hover:bg-primary-100 hover:text-black hover:border-black;
+  @apply px-8 xl:px-12;
+
+  &-outline {
+    @apply border-2 border-black rounded-full;
+    @apply hover:bg-primary-100;
+    @apply px-8 xl:px-12;
+  }
+}
+
+.btn-secondary {
+  @apply border-2 border-transparent bg-primary-600 text-white rounded-full;
+  @apply hover:bg-primary-100 hover:text-primary-600 hover:border-primary-600;
+  @apply px-8 xl:px-12;
+
+  &-outline {
+    @apply border-2 border-primary-600 rounded-full;
+    @apply hover:bg-primary-100;
+    @apply px-8 xl:px-12;
+  }
+}
+
+.btn-natural {
+  @apply bg-white text-black rounded;
+  @apply hover:bg-primary-600 hover:text-white;
+  @apply px-4 xl:px-6;
+
+  // &-outline {
+  //   @apply border-black rounded-full;
+  //   @apply hover:bg-black hover:text-white;
+  // }
+}
+
+.btn-sm {
+  @apply xl:h-9 px-4 xl:px-6;
+  @apply text-sm sm:text-sm xl:text-sm;
+}
+
+.btn-swiper {
+  @apply absolute z-10 top-1/2 -translate-y-1/2;
+
+  &.prev {
+    @apply left-0;
+  }
+
+  &.next {
+    @apply right-0;
+  }
+}
