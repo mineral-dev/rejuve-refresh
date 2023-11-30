@@ -38,10 +38,9 @@ export default function Header() {
   };
 
   useEffect(()=> {
-    if (!isError && data?.attributes?.items?.data && data?.attributes?.items?.data?.length > 0) {
+    if (!error && data?.attributes?.items?.data && data?.attributes?.items?.data?.length > 0) {
       dispacth(setMenus(data?.attributes?.items?.data))
       db.get('menus').catch(async (e)=>{
-        console.log(await setAttachDbMenu(data?.attributes?.items?.data),'jsjsj')
         const body = {
           _id: 'menus',
           data: data?.attributes?.items?.data,
@@ -54,7 +53,7 @@ export default function Header() {
         dispacth(setMenus(doc?.data))
       }).catch((e)=>console.warn(e));
     }
-  },[data, isError])
+  },[data, isError, error])
 
   return (
     <>

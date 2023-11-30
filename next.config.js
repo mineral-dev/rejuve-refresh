@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     domains: [
       'localhost',
+      'refresh.rejuve.co.id',
       'api-refresh.rejuve.co.id'
     ]
   }
