@@ -30,7 +30,7 @@ export const rejuveApi = createApi({
       }),
       getHomepage: build.query({
          query: () => ({
-            url: `/api/homepage?populate[0]=Image&populate[1]=Showcase&populate[2]=Showcase.Image&populate[3]=Showcase.Cta&populate[4]=ShowcaseSecond&populate[5]=ShowcaseSecond.Image&populate[6]=ShowcaseSecond.Cta&populate[7]=ShowcaseThird&populate[8]=Slideshow&populate[9]=Slideshow.Slideshow&populate[10]=Slideshow.Slideshow.Image&populate[11]=Slideshow.Slideshow.Cta`,
+            url: `/api/homepage?populate[0]=Intro&populate[1]=Showcase&populate[2]=Showcase.Image&populate[3]=Showcase.Cta&populate[4]=ShowcaseSecond&populate[5]=ShowcaseSecond.Image&populate[6]=ShowcaseSecond.Cta&populate[7]=ShowcaseThird&populate[8]=Slideshow&populate[9]=Slideshow.Slideshow&populate[10]=Slideshow.Slideshow.Image&populate[11]=Slideshow.Slideshow.Cta&populate[12]=Intro.Image`,
          }),
          transformResponse: (response, meta, arg) => response?.data,
          transformErrorResponse: (response, meta, arg) => response.status,

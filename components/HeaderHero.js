@@ -1,4 +1,5 @@
 import ImageWidth from "./ImageWidth";
+import Logo from "./Logo";
 
 export default function HeaderHero({ title, description, image, dbtable }) {
   return (
@@ -14,12 +15,15 @@ export default function HeaderHero({ title, description, image, dbtable }) {
             <Logo />
           }
         </div>
-        <div className="flex items-center lg:px-8">
-          <article
-            dangerouslySetInnerHTML={{ __html: description }}
-            className="prose"
-          />
-        </div>
+        {
+          description &&
+          <div className="flex items-center lg:px-8">
+            <article
+              dangerouslySetInnerHTML={{ __html: description }}
+              className="prose"
+            />
+          </div>
+        }
       </div>
     </section>
   );

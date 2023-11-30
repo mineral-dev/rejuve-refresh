@@ -39,6 +39,7 @@ export default function Enjoy() {
           title={post?.Intro?.Title}
           image={post?.Intro?.Image?.data?.attributes}
           description={MarkdownIt().render(post?.Intro?.Description)}
+          dbtable="enjoy"
         />
       }
 

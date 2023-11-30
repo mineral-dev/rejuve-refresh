@@ -264,7 +264,7 @@ export default function Header() {
                 item.attributes?.Image?.data?.attributes &&
                 <figure className="flex flex-grow relative aspect-[3/2] w-full">
                   <ImageFill
-                    style={{ objectFit: "scale-down", filter: hover && item?.attributes?.title === hover?.name ? 'brightness(0) saturate(100%) invert(25%) sepia(42%) saturate(2420%) hue-rotate(277deg) brightness(94%) contrast(87%)' : ''}}
+                    style={{ objectFit: "scale-down", filter: (hover && item?.attributes?.title === hover?.name || asPath === item.attributes?.url) ? 'brightness(0) saturate(100%) invert(25%) sepia(42%) saturate(2420%) hue-rotate(277deg) brightness(94%) contrast(87%)' : ''}}
                     data={item.attributes?.Image?.data?.attributes}
                     dbtable="menus"
                   />

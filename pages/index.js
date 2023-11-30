@@ -38,9 +38,11 @@ export default function Home() {
   return (
     <main>
       {
-        post?.Description &&
+        post?.Intro &&
         <HeaderHero
-          description={md().render(post?.Description)}
+          image={post?.Intro?.Image?.data?.attributes}
+          description={md().render(post?.Intro?.Description)}
+          dbtable="homepage"
         />
       }
       {
@@ -69,6 +71,7 @@ export default function Home() {
           data={{
             bgColor: post?.ShowcaseSecond?.ColorBg ? post?.ShowcaseSecond?.ColorBg : "#F8CA45",
             image: post?.ShowcaseSecond?.Image?.data?.attributes,
+            dbtable: "homepage"
           }}
         >
           {
