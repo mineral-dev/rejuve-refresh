@@ -109,7 +109,7 @@ export default function Menu() {
         <main
           className={`col-span-3 min-h-[300px] grid gap-4 p-6 grid-cols-4`}
         >
-          { 
+          {
             activeMenu?.attributes?.fnbMenus?.data &&
             activeMenu?.attributes?.fnbMenus?.data?.map((item, key) => (
               <button

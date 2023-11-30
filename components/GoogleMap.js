@@ -1,7 +1,7 @@
 // GoogleMap.js
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, MarkerF } from "@react-google-maps/api";
 
-const MapContainer = ({ location }) => {
+const MapContainer = ({ location, markers }) => {
   const mapStyles = {
     height: "100%",
     width: "100%",
@@ -211,10 +211,14 @@ const MapContainer = ({ location }) => {
       <GoogleMap
         mapContainerStyle={mapStyles}
         zoom={13}
-        center={defaultCenter}
+        center={markers?.length > 0 ? markers[0] : defaultCenter}
         options={mapOptions}
       >
-        <Marker position={defaultCenter} />
+        {
+          (markers && markers.length > 0 ) && markers.map((item, key)=> (
+            <MarkerF key={key} position={item} icon={{url: '../marker.svg'}} />
+          ))
+        }
       </GoogleMap>
     </LoadScript>
   );

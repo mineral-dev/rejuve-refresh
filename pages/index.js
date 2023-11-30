@@ -121,7 +121,7 @@ export default function Home() {
 
       {
         (post?.Slideshow) &&
-        <section className="bg-[#FCEADF] py-12 xl:py-24">
+        <section className="bg-[#FCEADF] py-12 xl:py-24 overflow-hidden">
           <div className="wrapper text-center">
             {
               post?.Slideshow?.Title &&
@@ -276,53 +276,3 @@ export function MenuThumb({ data, index, isActive }) {
     </section>
   );
 }
-
-const introduction = [
-  {
-    image: "/img/home/intro_one.jpg",
-    text: "<h2>Freshness.</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-  },
-  {
-    image: "/img/home/intro_two.jpg",
-    text: "<h2>High Quality Ingredients.</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-  },
-];
-
-const solution =
-  "<h2>Solutions for The Bustling City-Dweller</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p><p>Condimentum mattis pellentesque id nibh tortor id aliquet lectus proin. Semper feugiat nibh sed pulvinar. Tempus quam pellentesque nec nam aliquam sem et.</p><p>Ut diam quam nulla porttitor. Integer eget aliquet nibh praesent tristique. Pulvinar proin gravida hendrerit lectus a. Et malesuada fames ac turpis egestas sed tempus. Tortor at risus viverra adipiscing at in. Et ultrices neque ornare aenean euismod elementum nisi quis. Quis viverra nibh cras pulvinar.</p>";
-
-const favorite = {
-  title: "<h2>Enjoy your favorite smoothies</h2>",
-  menu: [
-    {
-      image: "/img/fav/bowl_one.png",
-      description:
-        "<h5>Classic Smoothies</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-    },
-    {
-      image: "/img/fav/bowl_two.png",
-      description:
-        "<h5>Classic Smoothies</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-    },
-    {
-      image: "/img/fav/bowl_three.png",
-      description:
-        "<h5>Classic Smoothies</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-    },
-    {
-      image: "/img/fav/bowl_one.png",
-      description:
-        "<h5>Classic Smoothies</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-    },
-    {
-      image: "/img/fav/bowl_two.png",
-      description:
-        "<h5>Classic Smoothies</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-    },
-    {
-      image: "/img/fav/bowl_three.png",
-      description:
-        "<h5>Classic Smoothies</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-    },
-  ],
-};

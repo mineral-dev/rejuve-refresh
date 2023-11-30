@@ -4,7 +4,6 @@ import Banner from "./Banner";
 import LogoRefresh from "./LogoRefresh";
 
 export default function BannerFooter({data, dbtable}) {
-  console.log(data,'data')
   return (
     <Banner
       data={{

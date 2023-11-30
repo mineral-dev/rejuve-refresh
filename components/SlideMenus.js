@@ -36,11 +36,14 @@ export default function SlideMenus({data, imageDb}) {
             {data?.map((item, key) => (
                <SwiperSlide key={key}>
                   <figure className="relative aspect-[9/16] w-full flex items-center">
-                     <ImageHandle
-                        style={{ objectFit: "contain"}}
-                        data={item.Image}
-                        dbtable={imageDb}
-                     />
+                     {
+                        item?.Image &&
+                        <ImageHandle
+                           style={{ objectFit: "contain"}}
+                           data={item.Image}
+                           dbtable={imageDb}
+                        />
+                     }
                   </figure>
                </SwiperSlide>
             ))}

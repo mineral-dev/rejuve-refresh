@@ -30,13 +30,11 @@ export default function Enjoy() {
     }
   },[data, isError, error])
 
-  console.log(post)
   return (
     <main className="flex-grow flex flex-col justify-between">
       {
         post?.Intro &&
         <HeaderHero
-          title={post?.Intro?.Title}
           image={post?.Intro?.Image?.data?.attributes}
           description={MarkdownIt().render(post?.Intro?.Description)}
           dbtable="enjoy"
@@ -48,7 +46,7 @@ export default function Enjoy() {
           <section className="bg-primary-100 pb-12 xl:pb-24">
             <div className="wrapper grid lg:grid-cols-2 gap-4">
               {post?.Showcase.map((item, key) => (
-                <Card key={key} data={item} />
+                <Card key={key} data={item} dbtable="enjoy" />
               ))}
             </div>
           </section>
@@ -57,7 +55,7 @@ export default function Enjoy() {
 
       {
         post?.Banner &&
-        <BannerFooter data={post?.Banner} />
+        <BannerFooter data={post?.Banner} dbtable="enjoy" />
       }
     </main>
   );
