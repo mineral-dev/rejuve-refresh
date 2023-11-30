@@ -71,7 +71,7 @@ export default function Menu() {
   },[activeMenuChildern, fnbMenus])
   // console.log(activeMenuChildern, fnbMenus, errorCat, isErrorCat)
   return (
-    <main className="flex-grow bg-[#2C1438]">
+    <main className="flex-grow bg-[url('/bg_menu.jpg')]">
       <section className="Category bg-primary-200 hidden lg:grid grid-cols-4 border-t-4 border-primary-600">
         <aside className="ParentCategory flex flex-col justify-between bg-primary-100">
           <div className="grid">
@@ -115,7 +115,7 @@ export default function Menu() {
               <button
                 key={key}
                 className={`bg-white rounded-lg transition ease-out-expo duration-500 hover:scale-105 hover:shadow-xl flex justify-center ${
-                  activeMenu.attributes?.Template === "Discover" ? "py-4 px-2" : "items-center px-2"
+                  activeMenu.attributes?.Template === "Discover" ? "py-4 px-2" : "items-center px-4"
                 }`}
                 onClick={()=> setActiveMenuChildern(item)}
               >
@@ -123,15 +123,15 @@ export default function Menu() {
                   className={`w-full h-full ${
                     activeMenu.attributes?.Template === "Discover"
                       ? "flex flex-col items-center space-y-6"
-                      : "flex items-center space-x-4"
+                      : "flex items-center justify-between"
                   }`}
                 >
-                  <span className="font-bold flex items-center text-center overflow-hidden max-h-14 h-full">
+                  <span className={`font-bold text-primary-600 text-left ${activeMenu.attributes?.Template === "Discover" ? '' : 'flex-grow'}`}>
                     {item.attributes?.Title}
                   </span>
                   {
                     item.attributes?.Icon?.data?.attributes?.url &&
-                      <figure className="relative aspect-[3/2] w-full flex items-center">
+                      <figure className={`relative w-full flex items-center ${activeMenu.attributes?.Template === "Discover" ? 'aspect-[3/2]' : 'aspect-square w-1/3'}`}>
                         <ImageHandle
                           style={{ objectFit: "contain"}}
                           data={item.attributes?.Icon?.data?.attributes}
