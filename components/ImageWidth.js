@@ -25,6 +25,7 @@ export default function ImageWidth({
       })
       .catch((e)=> {
          getUrlImgBlob(data?.name)
+         console.warn(e)
       })
    }
 
@@ -34,21 +35,17 @@ export default function ImageWidth({
 
    
    return (
-      <>
-         {
-            urlImg ? (
-               <Image
-                  className={className}
-                  style={style}
-                  src={urlImg}
-                  alt={data?.name}
-                  priority={true}
-                  width={data?.width}
-                  height={data?.height}
-               />
-            ) :
-            <div className={classShimmer}></div>
-         }
-      </>
+      urlImg ? (
+         <Image
+            className={className}
+            style={style}
+            src={urlImg}
+            alt={data?.name}
+            priority={true}
+            width={data?.width}
+            height={data?.height}
+         />
+      ) :
+      <div className={classShimmer}></div>
    )
 }

@@ -2,6 +2,7 @@ import db from "@/db/db"
 import { useGetCategoriesQuery, useGetEnjoyQuery, useGetFnbQuery, useGetHomepageQuery, useGetLocationQuery, useGetMenusQuery, useGetStoreLocationQuery } from "@/store/services/api"
 import { memoizePull } from "@/store/slice/main"
 import setAttachDbMenu from "@/utils/setAttachDbMenu"
+import setAttachCategories from "@/utils/setAttchDbCategories"
 import setAttachEnjoy from "@/utils/setAttchDbEnjoy"
 import setAttachFnb from "@/utils/setAttchDbFnb"
 import setAttachHomepage from "@/utils/setAttchDbHomepage"
@@ -90,6 +91,7 @@ export default function ButtonPull() {
                _id: 'categories',
                _rev: doc._rev,
                data: dataCat,
+               _attachments: await setAttachCategories(dataCat)
             }
             db.put(body).catch((e)=>console.warn(e))
          })
@@ -97,6 +99,7 @@ export default function ButtonPull() {
             const body = {
                _id: 'categories',
                data: dataCat,
+               _attachments: await setAttachCategories(dataCat)
             }
             db.put(body).catch((e)=>console.warn(e))
          });
@@ -166,7 +169,6 @@ export default function ButtonPull() {
       }
    }
 
-   console.log(pull)
    return (
       <button onClick={handlePull}>
          PULL

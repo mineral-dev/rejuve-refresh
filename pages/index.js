@@ -182,7 +182,7 @@ export function IntroSection({ index, data }) {
     >
       {
         data?.Image?.data?.attributes &&
-        <figure className="relative aspect-[4/5] lg:w-5/12">
+        <figure className="relative aspect-[4/5] w-full lg:w-5/12">
           <ImageHandle 
             style={{ objectFit: "cover" }}
             className="rounded-xl"
