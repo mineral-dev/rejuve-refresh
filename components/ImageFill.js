@@ -12,14 +12,14 @@ export default function ImageFill({
    const [urlImg, setUrlImg] = useState(null)
    
    const getUrlImgBlob = async (url) => {
-      let blobOrBuffer =  await db.getAttachment(dbtable, url)
+      let blobOrBuffer =  await db.getAttachment(dbtable, url).catch((e)=>console.warn(e))
       if (blobOrBuffer && url) {
          setUrlImg(URL.createObjectURL(blobOrBuffer))
       }
    }
 
    const fetchImg = async (data) => {
-      await fetch(`${process.env.NEXT_PUBLIC_RESTAPI_URL}`)
+      await fetch(process.env.NEXT_PUBLIC_RESTAPI_URL)
       .then((result)=>{
          setUrlImg(`${process.env.NEXT_PUBLIC_RESTAPI_URL}${data?.url}`)
       })
@@ -34,21 +34,17 @@ export default function ImageFill({
 
    
    return (
-      <>
-         {
-            urlImg ? (
-               <Image
-                  className={className}
-                  style={style}
-                  src={urlImg}
-                  alt={data?.name}
-                  priority={true}
-                  sizes="320 640 750"
-                  fill
-               />
-            ) :
-            <div className={classShimmer}></div>
-         }
-      </>
+      urlImg ? (
+         <Image
+            className={className}
+            style={style}
+            src={urlImg}
+            alt={data?.name}
+            priority={true}
+            sizes="320 640 750"
+            fill
+         />
+      ) :
+      <div className={classShimmer}></div>
    )
 }

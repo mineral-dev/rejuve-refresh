@@ -20,9 +20,9 @@ const setAttachDbMenu = async (data) => {
             let categories = item?.attributes?.FnbCategories?.data
 
             if (key === 'FnbCategories' && categories.length > 0) {
-               categories.map((cat)=> {
+               await Promise.all(categories.map(async(cat)=> {
                   cat?.attributes?.fnbMenus?.data?.length > 0 &&
-                  cat?.attributes?.fnbMenus?.data?.map(async(fnb)=> {
+                  await Promise.all(cat?.attributes?.fnbMenus?.data?.map(async(fnb)=> {
                      if (fnb?.attributes?.Icon?.data) {
                         Object.assign(assign, {
                            [fnb?.attributes?.Icon?.data?.attributes?.name]: {
@@ -31,14 +31,13 @@ const setAttachDbMenu = async (data) => {
                            }
                         })
                      }
-                  })
-               })
+                  }))
+               }))
             }
          }
-         console.log(item)
       })
    )
-
+      
    return assign
 }
 

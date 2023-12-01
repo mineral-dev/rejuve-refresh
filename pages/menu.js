@@ -2,6 +2,7 @@ import ImageHandle from "@/components/ImageFill";
 import SlideMenus from "@/components/SlideMenus";
 import db from "@/db/db";
 import { useGetCategoriesQuery, useGetFnbQuery } from "@/store/services/api";
+import setAttachCategories from "@/utils/setAttchDbCategories";
 import setAttachFnb from "@/utils/setAttchDbFnb";
 import { useEffect, useRef, useState } from "react";
 import "swiper/css";
@@ -23,10 +24,12 @@ export default function Menu() {
       setCategories(dataCat)
       setActiveMenu(dataCat[0])
       setActiveMenuChildern(dataCat[0]?.attributes?.fnbMenus?.data[0])
+      
       db.get('categories').catch(async (e)=>{
         const body = {
           _id: 'categories',
           data: dataCat,
+          _attachments: await setAttachCategories(dataCat)
         }
         db.put(body).catch((e)=>console.warn(e))
       });
@@ -62,6 +65,8 @@ export default function Menu() {
       const result = fnbMenus.filter((item)=> item.Slug === activeMenuChildern?.attributes?.Slug)
       if (result?.length > 0) {
         setSlideMenu(result)
+      }else{
+        setSlideMenu([])
       }
     }
 
@@ -69,7 +74,6 @@ export default function Menu() {
       setSlideMenu(fnbMenus)
     }
   },[activeMenuChildern, fnbMenus])
-  // console.log(activeMenuChildern, fnbMenus, errorCat, isErrorCat)
   return (
     <main className="flex-grow bg-[url('/bg_menu.jpg')]">
       <section className="Category bg-primary-200 hidden lg:grid grid-cols-4 border-t-4 border-primary-600">
@@ -130,12 +134,12 @@ export default function Menu() {
                     {item.attributes?.Title}
                   </span>
                   {
-                    item.attributes?.Icon?.data?.attributes?.url &&
+                    item?.attributes?.Icon?.data?.attributes &&
                       <figure className={`relative w-full flex items-center ${activeMenu.attributes?.Template === "Discover" ? 'aspect-[3/2]' : 'aspect-square w-1/3'}`}>
                         <ImageHandle
                           style={{ objectFit: "contain"}}
                           data={item.attributes?.Icon?.data?.attributes}
-                          dbtable="fnb"
+                          dbtable="categories"
                         />
                       </figure>
                   }
@@ -145,7 +149,13 @@ export default function Menu() {
           }
         </main>
       </section>
-      <SlideMenus data={slideMenu} imageDb="fnb" />
+      {
+        slideMenu.length > 0 ?
+        <SlideMenus data={slideMenu} imageDb="fnb" /> :
+        <div className="flex items-center">
+          Not Found
+        </div>
+      }
     </main>
   );
 }
