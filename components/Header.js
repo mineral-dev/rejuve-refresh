@@ -177,8 +177,9 @@ export default function Header() {
                             <p className="font-bold">{cat.attributes?.Title}</p>
                             <div className="grid grid-cols-2 gap-4 mt-2">
                               {cat.attributes?.fnbMenus?.data?.map((categoryChild, key2) => (
-                                <button
+                                <Link
                                   key={key2}
+                                  href={categoryChild?.attributes?.Slug ? `/menu/${categoryChild?.attributes?.Slug}` : '/menu'}
                                   className={`bg-white rounded-lg shadow-xl flex ${
                                     cat?.attributes?.Template === "Discover"
                                       ? "p-4"
@@ -212,7 +213,7 @@ export default function Header() {
                                       </figure>
                                     }
                                   </span>
-                                </button>
+                                </Link>
                               ))}
                             </div>
                           </div>

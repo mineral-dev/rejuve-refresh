@@ -7,7 +7,8 @@ const initialState = {
       status: false,
       success: '',
       error: ''
-   }
+   },
+   errorPull: {}
 }
 
 export const mainSlice = createSlice({
@@ -20,9 +21,13 @@ export const mainSlice = createSlice({
       setPull: (state, action) => {
          state.pull = action.payload
       },
+      setErrorPull: (state, action) => {
+         state.errorPull = action.payload
+      },
    }
 })
 
 export const memoizeMenus = memoize((state) => state.main.menus)
 export const memoizePull = memoize((state) => state.main.pull)
-export const { setMenus, setPull } = mainSlice.actions
+export const memoizeErrorPull = memoize((state) => state.main.errorPull)
+export const { setMenus, setPull, setErrorPull } = mainSlice.actions

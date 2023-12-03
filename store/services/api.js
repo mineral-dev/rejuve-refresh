@@ -55,6 +55,20 @@ export const rejuveApi = createApi({
          }),
          transformResponse: (response, meta, arg) => response?.data,
          transformErrorResponse: (response, meta, arg) => response.status,
+      }),
+      getSeo: build.query({
+         query: ({page}) => ({
+            url: `/api/seos?populate[0]=Seo&populate[1]=Seo.metaImage&filters[Page][$eq]=${page}`,
+         }),
+         transformResponse: (response, meta, arg) => response?.data,
+         transformErrorResponse: (response, meta, arg) => response.status,
+      }),
+      getAllSeo: build.query({
+         query: () => ({
+            url: `/api/seos?populate[0]=Seo&populate[1]=Seo.metaImage`,
+         }),
+         transformResponse: (response, meta, arg) => response?.data,
+         transformErrorResponse: (response, meta, arg) => response.status,
       })
    }),
 })
@@ -66,5 +80,7 @@ export const {
    useGetHomepageQuery,
    useGetEnjoyQuery,
    useGetLocationQuery,
-   useGetStoreLocationQuery
+   useGetStoreLocationQuery,
+   useGetSeoQuery,
+   useGetAllSeoQuery,
 } = rejuveApi
