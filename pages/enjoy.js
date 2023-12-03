@@ -1,8 +1,9 @@
 import BannerFooter from "@/components/FooterBanner";
 import HeaderHero from "@/components/HeaderHero";
 import ImageFill from "@/components/ImageFill";
+import MetaSeo from "@/components/MetaHead";
 import db from "@/db/db";
-import { useGetEnjoyQuery } from "@/store/services/api";
+import { useGetEnjoyQuery, useGetSeoQuery } from "@/store/services/api";
 import setAttachEnjoy from "@/utils/setAttchDbEnjoy";
 import MarkdownIt from "markdown-it";
 import Link from "next/link";
@@ -10,15 +11,21 @@ import { useEffect, useState } from "react";
 
 export default function Enjoy() {
   const [post, setPost] = useState({})
+  const [seo, setSeo] = useState(null)
   const { data, isError, error, loading } = useGetEnjoyQuery()
+  const { data: dataSeo, isError: isErrorSeo, error: errorSeo } = useGetSeoQuery({page: 'HowToEnjoy'})
 
   useEffect(()=>{
-    if (!error && data?.attributes) {
+    if ((!error && data?.attributes ) || (!errorSeo && dataSeo?.length > 0)) {
       setPost(data?.attributes)
+      if (dataSeo?.length > 0) {
+        setSeo(dataSeo[0]?.attributes)
+      }
       db.get('enjoy').catch(async (e)=>{
         const body = {
           _id: 'enjoy',
           data: data?.attributes,
+          seo: dataSeo?.length > 0 ? dataSeo[0]?.attributes : {},
           _attachments: await setAttachEnjoy(data?.attributes)
         }
         db.put(body).catch((e)=>console.warn(e))
@@ -26,12 +33,16 @@ export default function Enjoy() {
     }else{
       db.get('enjoy').then(function(doc) {
         setPost(doc?.data)
+        setSeo(doc?.seo)
       }).catch((e)=>console.warn(e));
     }
-  },[data, isError, error])
+  },[data, isError, error, dataSeo, isErrorSeo, errorSeo])
 
   return (
     <main className="flex-grow flex flex-col justify-between">
+      {
+        <MetaSeo data={seo} />
+      }
       {
         post?.Intro &&
         <HeaderHero

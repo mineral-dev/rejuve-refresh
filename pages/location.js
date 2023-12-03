@@ -1,8 +1,9 @@
 import BannerFooter from "@/components/FooterBanner";
 import MapContainer from "@/components/GoogleMap";
 import HeaderHero from "@/components/HeaderHero";
+import MetaSeo from "@/components/MetaHead";
 import db from "@/db/db";
-import { useGetLocationQuery, useGetStoreLocationQuery } from "@/store/services/api";
+import { useGetLocationQuery, useGetSeoQuery, useGetStoreLocationQuery } from "@/store/services/api";
 import setAttachLocation from "@/utils/setAttchDbLocation";
 import setAttachStores from "@/utils/setAttchDbStores";
 import MarkdownIt from "markdown-it";
@@ -11,10 +12,12 @@ import { useEffect, useState } from "react";
 
 export default function Location() {
   const [post, setPost] = useState({})
+  const [seo, setSeo] = useState(null)
   const [stores, setStores] = useState([])
   const [markers, setMarkers] = useState([])
   const { data: dataLoc, isError: isErrorLoc, error: errorLoc, loading: loadingLoc } = useGetLocationQuery()
   const { data: dataStore, isError: isErrorStore, error: errorStore, loading: loadingStore } = useGetStoreLocationQuery()
+  const { data: dataSeo, isError: isErrorSeo, error: errorSeo } = useGetSeoQuery({page: 'Location'})
 
   useEffect(()=> {
     if (!errorLoc && dataLoc?.attributes) {
@@ -35,13 +38,17 @@ export default function Location() {
   },[ dataLoc, isErrorLoc, errorLoc])
 
   useEffect(()=> {
-    if (!errorStore && dataStore?.length > 0) {
+    if ((!errorStore && dataStore?.length > 0) || (!errorSeo && dataSeo?.length > 0)) {
       setStores(dataStore)
       setMarkers(dataStore.map((item)=>({lat: item.attributes?.Lat, lng: item.attributes?.Lng})))
+      if (dataSeo?.length > 0) {
+        setSeo(dataSeo[0]?.attributes)
+      }
       db.get('store').catch(async (e)=>{
         const body = {
           _id: 'store',
           data: dataStore,
+          seo: dataSeo?.length > 0 ? dataSeo[0]?.attributes : {},
           _attachments: await setAttachStores(dataStore)
         }
         db.put(body).catch((e)=>console.warn(e))
@@ -50,12 +57,14 @@ export default function Location() {
       db.get('store').then(function(doc) {
         setStores(doc?.data)
         setMarkers(doc?.data?.map((item)=>({lat: item.attributes?.Lat, lng: item.attributes?.Lng})))
+        setSeo(doc?.seo)
       }).catch((e)=>console.warn(e));
     }
-  },[ dataStore, isErrorStore, errorStore])
+  },[ dataStore, isErrorStore, errorStore, dataSeo, isErrorSeo, errorSeo])
 
   return (
     <main className="flex-grow">
+      <MetaSeo data={seo} />
       {
         post?.Intro &&
         <HeaderHero

@@ -207,6 +207,7 @@ const MapContainer = ({ location, markers }) => {
         ],
       },
     ],
+    maxZoom: 15
   };
 
   const { isLoaded } = useJsApiLoader({

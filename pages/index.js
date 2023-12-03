@@ -4,8 +4,9 @@ import BtnPrev from "@/components/BtnPrev";
 import HeaderHero from "@/components/HeaderHero";
 import ImageHandle from "@/components/ImageFill";
 import ImageWidth from "@/components/ImageWidth";
+import MetaSeo from "@/components/MetaHead";
 import db from "@/db/db";
-import { useGetHomepageQuery } from "@/store/services/api";
+import { useGetHomepageQuery, useGetSeoQuery } from "@/store/services/api";
 import setAttachHomepage from "@/utils/setAttchDbHomepage";
 import md from "markdown-it";
 import Link from "next/link";
@@ -15,15 +16,21 @@ import { Swiper, SwiperSlide } from "swiper/react";
 export default function Home() {
   const swiperRef = useRef();
   const [post, setPost] = useState({})
+  const [seo, setSeo] = useState(null)
   const { data, isError, error} = useGetHomepageQuery()
+  const { data: dataSeo, isError: isErrorSeo, error: errorSeo } = useGetSeoQuery({page: 'Homepage'})
 
   useEffect(()=> {
-    if (!error && data?.attributes) {
+    if ((!error && data?.attributes) || (!errorSeo && dataSeo?.length > 0)) {
       setPost(data?.attributes)
+      if (dataSeo?.length > 0) {
+        setSeo(dataSeo[0]?.attributes)
+      }
       db.get('homepage').catch(async (e)=>{
         const body = {
           _id: 'homepage',
           data: data?.attributes,
+          seo: dataSeo?.length > 0 ? dataSeo[0]?.attributes : {},
           _attachments: await setAttachHomepage(data?.attributes)
         }
         db.put(body).catch((e)=>console.warn(e))
@@ -31,12 +38,14 @@ export default function Home() {
     }else{
       db.get('homepage').then(function(doc) {
         setPost(doc?.data)
+        setSeo(doc?.seo)
       }).catch((e)=>console.warn(e));
     }
-  },[data, error, isError])
+  },[ data, error, isError, dataSeo, isErrorSeo, errorSeo ])
 
   return (
     <main>
+      <MetaSeo data={seo} />
       {
         post?.Intro &&
         <HeaderHero
