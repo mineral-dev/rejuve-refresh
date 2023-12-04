@@ -12,63 +12,77 @@ export default function Menu() {
   const swiperRef = useRef();
   const [activeMenu, setActiveMenu] = useState({});
   const [activeMenuChildern, setActiveMenuChildern] = useState({});
-  const [categories, setCategories] = useState([])
-  const [fnbMenus, setFnbMenus] = useState([])
-  const [slideMenu, setSlideMenu] = useState([])
-  const { data: dataCat, isError: isErrorCat, error: errorCat } = useGetCategoriesQuery()
-  const { data: dataFnb, isError: isErrorFnb, error: errorFnb } = useGetFnbQuery()
+  const [categories, setCategories] = useState([]);
+  const [fnbMenus, setFnbMenus] = useState([]);
+  const [slideMenu, setSlideMenu] = useState([]);
+  const {
+    data: dataCat,
+    isError: isErrorCat,
+    error: errorCat,
+  } = useGetCategoriesQuery();
+  const {
+    data: dataFnb,
+    isError: isErrorFnb,
+    error: errorFnb,
+  } = useGetFnbQuery();
 
-  useEffect(()=> {
+  useEffect(() => {
     if (!errorCat && dataCat?.length > 0) {
-      setCategories(dataCat)
-      setActiveMenu(dataCat[0])
-      setActiveMenuChildern(dataCat[0]?.attributes?.fnbMenus?.data[0])
-      db.get('categories').catch(async (e)=>{
+      setCategories(dataCat);
+      setActiveMenu(dataCat[0]);
+      setActiveMenuChildern(dataCat[0]?.attributes?.fnbMenus?.data[0]);
+      db.get("categories").catch(async (e) => {
         const body = {
-          _id: 'categories',
+          _id: "categories",
           data: dataCat,
-        }
-        db.put(body).catch((e)=>console.warn(e))
+        };
+        db.put(body).catch((e) => console.warn(e));
       });
-    }else{
-      db.get('categories').then(function(doc) {
-        setCategories(doc?.data)
-        setActiveMenu(doc?.data[0])
-        setActiveMenuChildern(doc?.data[0]?.attributes?.fnbMenus?.data[0])
-      }).catch((e)=>console.warn(e));
+    } else {
+      db.get("categories")
+        .then(function (doc) {
+          setCategories(doc?.data);
+          setActiveMenu(doc?.data[0]);
+          setActiveMenuChildern(doc?.data[0]?.attributes?.fnbMenus?.data[0]);
+        })
+        .catch((e) => console.warn(e));
     }
-  },[dataCat, errorCat, isErrorCat])
+  }, [dataCat, errorCat, isErrorCat]);
 
-  useEffect(()=> {
+  useEffect(() => {
     if (!errorFnb && dataFnb?.length > 0) {
-      setFnbMenus(dataFnb)
-      db.get('fnb').catch(async (e)=>{
+      setFnbMenus(dataFnb);
+      db.get("fnb").catch(async (e) => {
         const body = {
-          _id: 'fnb',
+          _id: "fnb",
           data: dataFnb,
-          _attachments: await setAttachFnb(dataFnb)
-        }
-        db.put(body).catch((e)=>console.warn(e))
+          _attachments: await setAttachFnb(dataFnb),
+        };
+        db.put(body).catch((e) => console.warn(e));
       });
-    }else{
-      db.get('fnb').then(function(doc) {
-        setFnbMenus(doc?.data)
-      }).catch((e)=>console.warn(e));
+    } else {
+      db.get("fnb")
+        .then(function (doc) {
+          setFnbMenus(doc?.data);
+        })
+        .catch((e) => console.warn(e));
     }
-  },[dataFnb, errorFnb, isErrorFnb])
+  }, [dataFnb, errorFnb, isErrorFnb]);
 
-  useEffect(()=> {
+  useEffect(() => {
     if (fnbMenus?.length > 0) {
-      const result = fnbMenus.filter((item)=> item.Slug === activeMenuChildern?.attributes?.Slug)
+      const result = fnbMenus.filter(
+        (item) => item.Slug === activeMenuChildern?.attributes?.Slug,
+      );
       if (result?.length > 0) {
-        setSlideMenu(result)
+        setSlideMenu(result);
       }
     }
 
-    if (activeMenuChildern?.attributes?.Slug === 'all') {
-      setSlideMenu(fnbMenus)
+    if (activeMenuChildern?.attributes?.Slug === "all") {
+      setSlideMenu(fnbMenus);
     }
-  },[activeMenuChildern, fnbMenus])
+  }, [activeMenuChildern, fnbMenus]);
   // console.log(activeMenuChildern, fnbMenus, errorCat, isErrorCat)
   return (
     <main className="flex-grow bg-[url('/bg_menu.jpg')]">
@@ -80,7 +94,9 @@ export default function Menu() {
                 onClick={() => setActiveMenu(item)}
                 key={key}
                 className={`flex items-center justify-between text-black text-left h-14 px-8 ${
-                  activeMenu.attributes?.Slug === item.attributes?.Slug ? "bg-primary-200" : ""
+                  activeMenu.attributes?.Slug === item.attributes?.Slug
+                    ? "bg-primary-200"
+                    : ""
                 }`}
               >
                 <span className="font-bold">{item.attributes?.Title}</span>
@@ -104,20 +120,28 @@ export default function Menu() {
               </button>
             ))}
           </div>
-          <button onClick={()=> setActiveMenuChildern({attributes: {Slug: 'all', Title: 'All'}})} className="btn-secondary mx-4 mb-4">Show All</button>
+          <button
+            onClick={() =>
+              setActiveMenuChildern({
+                attributes: { Slug: "all", Title: "All" },
+              })
+            }
+            className="btn-secondary mx-4 mb-4"
+          >
+            Show All
+          </button>
         </aside>
-        <main
-          className={`col-span-3 min-h-[300px] grid gap-4 p-6 grid-cols-4`}
-        >
-          { 
-            activeMenu?.attributes?.fnbMenus?.data &&
+        <main className={`col-span-3 min-h-[300px] grid gap-4 p-6 grid-cols-4`}>
+          {activeMenu?.attributes?.fnbMenus?.data &&
             activeMenu?.attributes?.fnbMenus?.data?.map((item, key) => (
               <button
                 key={key}
                 className={`bg-white rounded-lg transition ease-out-expo duration-500 hover:scale-105 hover:shadow-xl flex justify-center ${
-                  activeMenu.attributes?.Template === "Discover" ? "py-4 px-2" : "items-center px-4"
+                  activeMenu.attributes?.Template === "Discover"
+                    ? "py-4 px-2"
+                    : "items-center px-4"
                 }`}
-                onClick={()=> setActiveMenuChildern(item)}
+                onClick={() => setActiveMenuChildern(item)}
               >
                 <span
                   className={`w-full h-full ${
@@ -126,23 +150,33 @@ export default function Menu() {
                       : "flex items-center justify-between"
                   }`}
                 >
-                  <span className={`font-bold text-primary-600 text-left ${activeMenu.attributes?.Template === "Discover" ? '' : 'flex-grow'}`}>
+                  <span
+                    className={`font-bold text-primary-600 text-left ${
+                      activeMenu.attributes?.Template === "Discover"
+                        ? ""
+                        : "flex-grow"
+                    }`}
+                  >
                     {item.attributes?.Title}
                   </span>
-                  {
-                    item.attributes?.Icon?.data?.attributes?.url &&
-                      <figure className={`relative w-full flex items-center ${activeMenu.attributes?.Template === "Discover" ? 'aspect-[3/2]' : 'aspect-square w-1/3'}`}>
-                        <ImageHandle
-                          style={{ objectFit: "contain"}}
-                          data={item.attributes?.Icon?.data?.attributes}
-                          dbtable="fnb"
-                        />
-                      </figure>
-                  }
+                  {item.attributes?.Icon?.data?.attributes?.url && (
+                    <figure
+                      className={`relative w-full flex items-center ${
+                        activeMenu.attributes?.Template === "Discover"
+                          ? "aspect-[3/2]"
+                          : "aspect-square w-1/3"
+                      }`}
+                    >
+                      <ImageHandle
+                        style={{ objectFit: "contain" }}
+                        data={item.attributes?.Icon?.data?.attributes}
+                        dbtable="fnb"
+                      />
+                    </figure>
+                  )}
                 </span>
               </button>
-            ))
-          }
+            ))}
         </main>
       </section>
       <SlideMenus data={slideMenu} imageDb="fnb" />

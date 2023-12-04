@@ -6,30 +6,30 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import ImageFill from "./ImageFill";
 
 export default function Header() {
-  const menus = useSelector(memoizeMenus)
-  const dispacth = useDispatch()
+  const menus = useSelector(memoizeMenus);
+  const dispacth = useDispatch();
   const router = useRouter();
   const asPath = router.asPath;
   const [isMobileMenu, setIsMobileMenu] = useState(false);
   const [isFoodMenu, setIsFoodMenu] = useState(false);
-  const [hover, setHover] = useState({ status: false, name: ''});
-  const { data, isError, error } = useGetMenusQuery()
+  const [hover, setHover] = useState({ status: false, name: "" });
+  const { data, isError, error } = useGetMenusQuery();
 
   const handleHeaderLink = (e) => {
     e.preventDefault();
     console.log(e);
   };
-  
+
   const handleMobileMenu = () => {
     setIsMobileMenu(!isMobileMenu);
-    if(!isMobileMenu){
-      document.body.classList.add("overflow-hidden")
+    if (!isMobileMenu) {
+      document.body.classList.add("overflow-hidden");
     } else {
-      document.body.classList.remove("overflow-hidden")
+      document.body.classList.remove("overflow-hidden");
     }
   };
 
@@ -37,24 +37,33 @@ export default function Header() {
     setIsFoodMenu(!isFoodMenu);
   };
 
-  useEffect(()=> {
-    if (!isError && data?.attributes?.items?.data && data?.attributes?.items?.data?.length > 0) {
-      dispacth(setMenus(data?.attributes?.items?.data))
-      db.get('menus').catch(async (e)=>{
-        console.log(await setAttachDbMenu(data?.attributes?.items?.data),'jsjsj')
+  useEffect(() => {
+    if (
+      !isError &&
+      data?.attributes?.items?.data &&
+      data?.attributes?.items?.data?.length > 0
+    ) {
+      dispacth(setMenus(data?.attributes?.items?.data));
+      db.get("menus").catch(async (e) => {
+        console.log(
+          await setAttachDbMenu(data?.attributes?.items?.data),
+          "jsjsj",
+        );
         const body = {
-          _id: 'menus',
+          _id: "menus",
           data: data?.attributes?.items?.data,
-          _attachments: await setAttachDbMenu(data?.attributes?.items?.data)
-        }
-        db.put(body).catch((e)=>console.warn(e))
+          _attachments: await setAttachDbMenu(data?.attributes?.items?.data),
+        };
+        db.put(body).catch((e) => console.warn(e));
       });
-    }else{
-      db.get('menus').then(function(doc) {
-        dispacth(setMenus(doc?.data))
-      }).catch((e)=>console.warn(e));
+    } else {
+      db.get("menus")
+        .then(function (doc) {
+          dispacth(setMenus(doc?.data));
+        })
+        .catch((e) => console.warn(e));
     }
-  },[data, isError])
+  }, [data, isError]);
 
   return (
     <>
@@ -105,35 +114,40 @@ export default function Header() {
                 <div key={key} onClick={handleFoodMenu}>
                   <div
                     className={`relative flex items-center justify-between pl-4 ${
-                      item.attributes?.FnbCategories?.data?.length > 0 ? "" : "h-11"
+                      item.attributes?.FnbCategories?.data?.length > 0
+                        ? ""
+                        : "h-11"
                     }`}
                   >
                     <Link
-                      href={item.attributes?.FnbCategories?.data?.length == 0 ? item?.attributes?.url : '#'}
-                      onClick={()=> handleMobileMenu()}
+                      href={
+                        item.attributes?.FnbCategories?.data?.length == 0
+                          ? item?.attributes?.url
+                          : "#"
+                      }
+                      onClick={() => handleMobileMenu()}
                       className="flex items-center space-x-2 cursor-pointer"
                     >
                       <span className="w-8 flex justify-center [&>svg]:h-7">
-                      {
-                        item.attributes?.Image?.data?.attributes &&
-                        <figure className="flex flex-grow relative aspect-square">
-                          <ImageFill
-                            style={{ objectFit: "contain"}}
-                            data={item.attributes?.Image?.data?.attributes}
-                            dbtable="menus"
-                          />
-                        </figure>
-                      }
+                        {item.attributes?.Image?.data?.attributes && (
+                          <figure className="flex flex-grow relative aspect-square">
+                            <ImageFill
+                              style={{ objectFit: "contain" }}
+                              data={item.attributes?.Image?.data?.attributes}
+                              dbtable="menus"
+                            />
+                          </figure>
+                        )}
                       </span>
-                      {
-                        item?.attributes?.title &&
-                        <span className="font-bold">{item?.attributes?.title}</span>
-                      }
+                      {item?.attributes?.title && (
+                        <span className="font-bold">
+                          {item?.attributes?.title}
+                        </span>
+                      )}
                     </Link>
-                    {(item.attributes?.FnbCategories?.data?.length > 0 || item.attributes?.items) && (
-                      <button
-                        className="w-11 h-11 flex items-center justify-center"
-                      >
+                    {(item.attributes?.FnbCategories?.data?.length > 0 ||
+                      item.attributes?.items) && (
+                      <button className="w-11 h-11 flex items-center justify-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="11.442"
@@ -154,72 +168,85 @@ export default function Header() {
                     )}
                   </div>
                   <AnimatePresence key={key}>
-                    {item.attributes?.FnbCategories?.data?.length > 0 && isFoodMenu && (
-                      <motion.section
-                        initial={{
-                          opacity: 0,
-                          y: -16,
-                          transition: {
-                            duration: 0.3,
-                          },
-                        }}
-                        animate={{
-                          opacity: 1,
-                          y: 0,
-                        }}
-                        exit={{
-                          opacity: 0,
-                          y: -16,
-                        }}
-                        className="grid gap-4 p-4"
-                      >
-                        {item.attributes?.FnbCategories?.data?.map((cat, key) => (
-                          <div key={key}>
-                            <p className="font-bold">{cat.attributes?.Title}</p>
-                            <div className="grid grid-cols-2 gap-4 mt-2">
-                              {cat.attributes?.fnbMenus?.data?.map((categoryChild, key2) => (
-                                <button
-                                  key={key2}
-                                  className={`bg-white rounded-lg shadow-xl flex ${
-                                    cat?.attributes?.Template === "Discover"
-                                      ? "p-4"
-                                      : "items-center p-4"
-                                  }`}
-                                >
-                                  <span
-                                    className={`${
-                                      cat?.attributes?.Template === "Discover"
-                                        ? "flex flex-col items-center space-y-6 w-full"
-                                        : "flex items-center space-x-4"
-                                    }`}
-                                  >
-                                    <span
-                                      className={`font-bold block text-primary-900 text-sm ${
-                                        cat.attributes?.Template === "Discover"
-                                          ? "text-center"
-                                          : "text-left"
-                                      }`}
-                                    >
-                                      {categoryChild.attributes?.Title}
-                                    </span>
-                                    {
-                                      categoryChild.attributes?.Icon?.data?.attributes &&
-                                      <figure className="relative aspect-[3/2] w-full flex items-center">
-                                        <ImageFill
-                                          style={{ objectFit: "contain"}}
-                                          data={categoryChild.attributes?.Icon?.data?.attributes}
-                                          dbtable="menus"
-                                        />
-                                      </figure>
-                                    }
-                                  </span>
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </motion.section>
-                    )}
+                    {item.attributes?.FnbCategories?.data?.length > 0 &&
+                      isFoodMenu && (
+                        <motion.section
+                          initial={{
+                            opacity: 0,
+                            y: -16,
+                            transition: {
+                              duration: 0.3,
+                            },
+                          }}
+                          animate={{
+                            opacity: 1,
+                            y: 0,
+                          }}
+                          exit={{
+                            opacity: 0,
+                            y: -16,
+                          }}
+                          className="grid gap-4 p-4"
+                        >
+                          {item.attributes?.FnbCategories?.data?.map(
+                            (cat, key) => (
+                              <div key={key}>
+                                <p className="font-bold">
+                                  {cat.attributes?.Title}
+                                </p>
+                                <div className="grid grid-cols-2 gap-4 mt-2">
+                                  {cat.attributes?.fnbMenus?.data?.map(
+                                    (categoryChild, key2) => (
+                                      <button
+                                        key={key2}
+                                        className={`bg-white rounded-lg shadow-xl flex ${
+                                          cat?.attributes?.Template ===
+                                          "Discover"
+                                            ? "p-4"
+                                            : "items-center p-4"
+                                        }`}
+                                      >
+                                        <span
+                                          className={`${
+                                            cat?.attributes?.Template ===
+                                            "Discover"
+                                              ? "flex flex-col items-center space-y-6 w-full"
+                                              : "w-full flex items-center justify-between space-x-4"
+                                          }`}
+                                        >
+                                          <span
+                                            className={`font-bold block text-primary-900 text-sm ${
+                                              cat.attributes?.Template ===
+                                              "Discover"
+                                                ? "text-center"
+                                                : "text-left w-1/2"
+                                            }`}
+                                          >
+                                            {categoryChild.attributes?.Title}
+                                          </span>
+                                          {categoryChild.attributes?.Icon?.data
+                                            ?.attributes && (
+                                            <figure className="relative aspect-[5/4] lg:aspect-[3/2] w-full flex items-center">
+                                              <ImageFill
+                                                style={{ objectFit: "contain" }}
+                                                data={
+                                                  categoryChild.attributes?.Icon
+                                                    ?.data?.attributes
+                                                }
+                                                dbtable="menus"
+                                              />
+                                            </figure>
+                                          )}
+                                        </span>
+                                      </button>
+                                    ),
+                                  )}
+                                </div>
+                              </div>
+                            ),
+                          )}
+                        </motion.section>
+                      )}
                   </AnimatePresence>
                 </div>
               ))}
@@ -257,19 +284,27 @@ export default function Header() {
             className={`relative flex flex-col items-center space-y-1 hover:text-primary-600 group ${
               asPath === item.attributes?.url ? "text-primary-600" : ""
             }`}
-            onMouseEnter={()=> setHover({status: true, name: item?.attributes?.title})}
-            onMouseLeave={()=> setHover({status: false, name: ''})}
+            onMouseEnter={() =>
+              setHover({ status: true, name: item?.attributes?.title })
+            }
+            onMouseLeave={() => setHover({ status: false, name: "" })}
           >
-              {
-                item.attributes?.Image?.data?.attributes &&
-                <figure className="flex flex-grow relative aspect-[3/2] w-full">
-                  <ImageFill
-                    style={{ objectFit: "scale-down", filter: (hover && item?.attributes?.title === hover?.name || asPath === item.attributes?.url) ? 'brightness(0) saturate(100%) invert(25%) sepia(42%) saturate(2420%) hue-rotate(277deg) brightness(94%) contrast(87%)' : ''}}
-                    data={item.attributes?.Image?.data?.attributes}
-                    dbtable="menus"
-                  />
-                </figure>
-              }
+            {item.attributes?.Image?.data?.attributes && (
+              <figure className="flex flex-grow relative aspect-[3/2] w-full">
+                <ImageFill
+                  style={{
+                    objectFit: "scale-down",
+                    filter:
+                      (hover && item?.attributes?.title === hover?.name) ||
+                      asPath === item.attributes?.url
+                        ? "brightness(0) saturate(100%) invert(25%) sepia(42%) saturate(2420%) hue-rotate(277deg) brightness(94%) contrast(87%)"
+                        : "",
+                  }}
+                  data={item.attributes?.Image?.data?.attributes}
+                  dbtable="menus"
+                />
+              </figure>
+            )}
             <span className="font-bold">{item.attributes?.title}</span>
             {asPath === item.attributes?.url && (
               <span className="absolute -bottom-4 content-[''] w-2 h-2 bg-primary-600 rounded-full"></span>

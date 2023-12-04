@@ -1,7 +1,3 @@
 export default function PullData() {
-   return (
-      <section>
-         
-      </section>
-   )
+  return <section></section>;
 }
