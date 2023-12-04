@@ -1,14 +1,112 @@
-import HeaderHero from "@/components/HeaderHero";
-import Link from "next/link";
+import BannerFooter from "@/components/FooterBanner";
 import MapContainer from "@/components/GoogleMap";
-import FooterBanner from "@/components/FooterBanner";
+import HeaderHero from "@/components/HeaderHero";
+import MetaSeo from "@/components/MetaHead";
+import db from "@/db/db";
+import {
+  useGetLocationQuery,
+  useGetSeoQuery,
+  useGetStoreLocationQuery,
+} from "@/store/services/api";
+import setAttachLocation from "@/utils/setAttchDbLocation";
+import setAttachStores from "@/utils/setAttchDbStores";
+import MarkdownIt from "markdown-it";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Location() {
+  const [post, setPost] = useState({});
+  const [seo, setSeo] = useState(null);
+  const [stores, setStores] = useState([]);
+  const [markers, setMarkers] = useState([]);
+  const {
+    data: dataLoc,
+    isError: isErrorLoc,
+    error: errorLoc,
+    loading: loadingLoc,
+  } = useGetLocationQuery();
+  const {
+    data: dataStore,
+    isError: isErrorStore,
+    error: errorStore,
+    loading: loadingStore,
+  } = useGetStoreLocationQuery();
+  const {
+    data: dataSeo,
+    isError: isErrorSeo,
+    error: errorSeo,
+  } = useGetSeoQuery({ page: "Location" });
+
+  useEffect(() => {
+    if (!errorLoc && dataLoc?.attributes) {
+      setPost(dataLoc?.attributes);
+      db.get("location").catch(async (e) => {
+        const body = {
+          _id: "location",
+          data: dataLoc?.attributes,
+          _attachments: await setAttachLocation(dataLoc?.attributes),
+        };
+        db.put(body).catch((e) => console.warn(e));
+      });
+    } else {
+      db.get("location")
+        .then(function (doc) {
+          setPost(doc?.data);
+        })
+        .catch((e) => console.warn(e));
+    }
+  }, [dataLoc, isErrorLoc, errorLoc]);
+
+  useEffect(() => {
+    if (
+      (!errorStore && dataStore?.length > 0) ||
+      (!errorSeo && dataSeo?.length > 0)
+    ) {
+      setStores(dataStore);
+      setMarkers(
+        dataStore.map((item) => ({
+          lat: item.attributes?.Lat,
+          lng: item.attributes?.Lng,
+        })),
+      );
+      if (dataSeo?.length > 0) {
+        setSeo(dataSeo[0]?.attributes);
+      }
+      db.get("store").catch(async (e) => {
+        const body = {
+          _id: "store",
+          data: dataStore,
+          seo: dataSeo?.length > 0 ? dataSeo[0]?.attributes : {},
+          _attachments: await setAttachStores(dataStore),
+        };
+        db.put(body).catch((e) => console.warn(e));
+      });
+    } else {
+      db.get("store")
+        .then(function (doc) {
+          setStores(doc?.data);
+          setMarkers(
+            doc?.data?.map((item) => ({
+              lat: item.attributes?.Lat,
+              lng: item.attributes?.Lng,
+            })),
+          );
+          setSeo(doc?.seo);
+        })
+        .catch((e) => console.warn(e));
+    }
+  }, [dataStore, isErrorStore, errorStore, dataSeo, isErrorSeo, errorSeo]);
+
   return (
     <main className="flex-grow">
-      <HeaderHero
-        description={`<h4>Find Rejuve Re.fresh near you. Check out our store locator for the nearest location that sells Re.Fresh!</h4>`}
-      />
+      <MetaSeo data={seo} />
+      {post?.Intro && (
+        <HeaderHero
+          image={post?.Intro?.Image?.data?.attributes}
+          description={MarkdownIt().render(post?.Intro?.Description)}
+          dbtable="location"
+        />
+      )}
 
       <section className="bg-white">
         <div className="wrapper py-12">
@@ -17,19 +115,23 @@ export default function Location() {
           <div className="flex flex-col-reverse lg:grid lg:grid-cols-3 gap-8 mt-12">
             <section>
               <div className="grid gap-y-2 divide-y divide-primary-200">
-                {stores.map((item, key) => (
-                  <StoreItem data={item} />
-                ))}
+                {stores &&
+                  stores?.length > 0 &&
+                  stores.map((item, key) => (
+                    <StoreItem data={item} key={key} />
+                  ))}
               </div>
             </section>
             <section className="col-span-2 rounded-xl aspect-square lg:aspect-video">
-              <MapContainer location={location} />
+              {markers && markers?.length > 0 && (
+                <MapContainer location={location} markers={markers} />
+              )}
             </section>
           </div>
         </div>
       </section>
 
-      <FooterBanner />
+      {post?.Banner && <BannerFooter data={post?.Banner} dbtable="location" />}
     </main>
   );
 }
@@ -54,11 +156,20 @@ export function StoreItem({ data }) {
         </svg>
       </div>
       <div>
-        <h5>{data.name}</h5>
-        <p>{data.address}</p>
-        <Link href={data.cta.link} className="btn-primary btn-sm mt-4">
-          {data.cta.caption}
-        </Link>
+        {data?.attributes?.Title && <h5>{data?.attributes?.Title}</h5>}
+        {data?.attributes?.Address && <p>{data?.attributes?.Address}</p>}
+        {data?.attributes?.Cta &&
+          data?.attributes?.Cta?.length > 0 &&
+          data?.attributes?.Cta?.map((item, key) => (
+            <Link
+              key={key}
+              target="_blank"
+              href={item?.Link ? item?.Link : "#"}
+              className="btn-primary btn-sm mt-4"
+            >
+              {item.Caption}
+            </Link>
+          ))}
       </div>
     </section>
   );
@@ -68,24 +179,3 @@ const location = {
   lat: -6.18298752457914, // Replace with your desired latitude
   lng: 106.74065351700509, // Replace with your desired longitude
 };
-
-const stores = [
-  {
-    name: "The Store Name",
-    address: "Est deserunt id proident eu dolor deserunt amet.",
-    cta: {
-      icon: "",
-      caption: "Contact Us",
-      link: "/",
-    },
-  },
-  {
-    name: "The Store Name",
-    address: "Est deserunt id proident eu dolor deserunt amet.",
-    cta: {
-      icon: "",
-      caption: "Contact Us",
-      link: "/",
-    },
-  },
-];

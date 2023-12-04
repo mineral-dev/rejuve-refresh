@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 export default function ImageWidth({
   className,
   data,
-  classShimmer = "w-10 h-10 bg-gray-100",
   dbtable = "",
   style = {},
 }) {
@@ -25,6 +24,7 @@ export default function ImageWidth({
       })
       .catch((e) => {
         getUrlImgBlob(data?.name);
+        console.warn(e);
       });
   };
 
@@ -32,21 +32,17 @@ export default function ImageWidth({
     fetchImg(data);
   }, [data]);
 
-  return (
-    <>
-      {urlImg ? (
-        <Image
-          className={className}
-          style={style}
-          src={urlImg}
-          alt={data?.name}
-          priority={true}
-          width={data?.width}
-          height={data?.height}
-        />
-      ) : (
-        <div className={classShimmer}></div>
-      )}
-    </>
+  return urlImg ? (
+    <Image
+      className={className}
+      style={style}
+      src={urlImg}
+      alt={data?.name}
+      priority={true}
+      width={data?.width}
+      height={data?.height}
+    />
+  ) : (
+    <div></div>
   );
 }

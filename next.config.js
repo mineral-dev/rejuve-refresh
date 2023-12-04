@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["localhost", "api-refresh.rejuve.co.id"],
+    domains: ["localhost", "refresh.rejuve.co.id", "api-refresh.rejuve.co.id"],
   },
 };
 

@@ -22,25 +22,28 @@ const setAttachDbMenu = async (data) => {
         let categories = item?.attributes?.FnbCategories?.data;
 
         if (key === "FnbCategories" && categories.length > 0) {
-          categories.map((cat) => {
-            cat?.attributes?.fnbMenus?.data?.length > 0 &&
-              cat?.attributes?.fnbMenus?.data?.map(async (fnb) => {
-                if (fnb?.attributes?.Icon?.data) {
-                  Object.assign(assign, {
-                    [fnb?.attributes?.Icon?.data?.attributes?.name]: {
-                      content_type:
-                        fnb?.attributes?.Icon?.data?.attributes?.mime,
-                      data: await base64(
-                        `${process.env.NEXT_PUBLIC_RESTAPI_URL}${fnb?.attributes?.Icon?.data?.attributes?.url}`,
-                      ),
-                    },
-                  });
-                }
-              });
-          });
+          await Promise.all(
+            categories.map(async (cat) => {
+              cat?.attributes?.fnbMenus?.data?.length > 0 &&
+                (await Promise.all(
+                  cat?.attributes?.fnbMenus?.data?.map(async (fnb) => {
+                    if (fnb?.attributes?.Icon?.data) {
+                      Object.assign(assign, {
+                        [fnb?.attributes?.Icon?.data?.attributes?.name]: {
+                          content_type:
+                            fnb?.attributes?.Icon?.data?.attributes?.mime,
+                          data: await base64(
+                            `${process.env.NEXT_PUBLIC_RESTAPI_URL}${fnb?.attributes?.Icon?.data?.attributes?.url}`,
+                          ),
+                        },
+                      });
+                    }
+                  }),
+                ));
+            }),
+          );
         }
       }
-      console.log(item);
     }),
   );
 

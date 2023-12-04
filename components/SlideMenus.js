@@ -6,7 +6,7 @@ import { EffectCoverflow, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import BtnNext from "./BtnNext";
 import BtnPrev from "./BtnPrev";
-import ImageHandle from "./ImageFill";
+import ImageWidth from "./ImageWidth";
 
 export default function SlideMenus({ data, imageDb }) {
   const swiperRef = useRef();
@@ -35,14 +35,8 @@ export default function SlideMenus({ data, imageDb }) {
       >
         {data?.map((item, key) => (
           <SwiperSlide key={key}>
-            <figure className="relative aspect-[9/16] w-full flex items-center">
-              {item.Image && (
-                <ImageHandle
-                  style={{ objectFit: "contain" }}
-                  data={item.Image}
-                  dbtable={imageDb}
-                />
-              )}
+            <figure className="relative w-full flex items-center justify-center">
+              {item.Image && <ImageWidth data={item.Image} dbtable={imageDb} />}
             </figure>
           </SwiperSlide>
         ))}

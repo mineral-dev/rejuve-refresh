@@ -4,8 +4,9 @@ import BtnPrev from "@/components/BtnPrev";
 import HeaderHero from "@/components/HeaderHero";
 import ImageHandle from "@/components/ImageFill";
 import ImageWidth from "@/components/ImageWidth";
+import MetaSeo from "@/components/MetaHead";
 import db from "@/db/db";
-import { useGetHomepageQuery } from "@/store/services/api";
+import { useGetHomepageQuery, useGetSeoQuery } from "@/store/services/api";
 import setAttachHomepage from "@/utils/setAttchDbHomepage";
 import md from "markdown-it";
 import Link from "next/link";
@@ -15,15 +16,25 @@ import { Swiper, SwiperSlide } from "swiper/react";
 export default function Home() {
   const swiperRef = useRef();
   const [post, setPost] = useState({});
+  const [seo, setSeo] = useState(null);
   const { data, isError, error } = useGetHomepageQuery();
+  const {
+    data: dataSeo,
+    isError: isErrorSeo,
+    error: errorSeo,
+  } = useGetSeoQuery({ page: "Homepage" });
 
   useEffect(() => {
-    if (!error && data?.attributes) {
+    if ((!error && data?.attributes) || (!errorSeo && dataSeo?.length > 0)) {
       setPost(data?.attributes);
+      if (dataSeo?.length > 0) {
+        setSeo(dataSeo[0]?.attributes);
+      }
       db.get("homepage").catch(async (e) => {
         const body = {
           _id: "homepage",
           data: data?.attributes,
+          seo: dataSeo?.length > 0 ? dataSeo[0]?.attributes : {},
           _attachments: await setAttachHomepage(data?.attributes),
         };
         db.put(body).catch((e) => console.warn(e));
@@ -32,13 +43,15 @@ export default function Home() {
       db.get("homepage")
         .then(function (doc) {
           setPost(doc?.data);
+          setSeo(doc?.seo);
         })
         .catch((e) => console.warn(e));
     }
-  }, [data, error, isError]);
+  }, [data, error, isError, dataSeo, isErrorSeo, errorSeo]);
 
   return (
     <main>
+      <MetaSeo data={seo} />
       {post?.Intro && (
         <HeaderHero
           image={post?.Intro?.Image?.data?.attributes}
@@ -121,7 +134,7 @@ export default function Home() {
       )}
 
       {post?.Slideshow && (
-        <section className="bg-[#FCEADF] py-12 xl:py-24">
+        <section className="bg-[#FCEADF] py-12 xl:py-24 overflow-hidden">
           <div className="wrapper text-center">
             {post?.Slideshow?.Title && (
               <div className="h2">{post?.Slideshow?.Title}</div>
@@ -182,7 +195,7 @@ export function IntroSection({ index, data }) {
       }`}
     >
       {data?.Image?.data?.attributes && (
-        <figure className="relative aspect-[4/5] lg:w-5/12">
+        <figure className="relative aspect-[4/5] w-full lg:w-5/12">
           <ImageHandle
             style={{ objectFit: "cover" }}
             className="rounded-xl"
@@ -282,53 +295,3 @@ export function MenuThumb({ data, index, isActive }) {
     </section>
   );
 }
-
-const introduction = [
-  {
-    image: "/img/home/intro_one.jpg",
-    text: "<h2>Freshness.</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-  },
-  {
-    image: "/img/home/intro_two.jpg",
-    text: "<h2>High Quality Ingredients.</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-  },
-];
-
-const solution =
-  "<h2>Solutions for The Bustling City-Dweller</h2><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p><p>Condimentum mattis pellentesque id nibh tortor id aliquet lectus proin. Semper feugiat nibh sed pulvinar. Tempus quam pellentesque nec nam aliquam sem et.</p><p>Ut diam quam nulla porttitor. Integer eget aliquet nibh praesent tristique. Pulvinar proin gravida hendrerit lectus a. Et malesuada fames ac turpis egestas sed tempus. Tortor at risus viverra adipiscing at in. Et ultrices neque ornare aenean euismod elementum nisi quis. Quis viverra nibh cras pulvinar.</p>";
-
-const favorite = {
-  title: "<h2>Enjoy your favorite smoothies</h2>",
-  menu: [
-    {
-      image: "/img/fav/bowl_one.png",
-      description:
-        "<h5>Classic Smoothies</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-    },
-    {
-      image: "/img/fav/bowl_two.png",
-      description:
-        "<h5>Classic Smoothies</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-    },
-    {
-      image: "/img/fav/bowl_three.png",
-      description:
-        "<h5>Classic Smoothies</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-    },
-    {
-      image: "/img/fav/bowl_one.png",
-      description:
-        "<h5>Classic Smoothies</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-    },
-    {
-      image: "/img/fav/bowl_two.png",
-      description:
-        "<h5>Classic Smoothies</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-    },
-    {
-      image: "/img/fav/bowl_three.png",
-      description:
-        "<h5>Classic Smoothies</h5><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Praesent tristique magna sit amet purus. Adipiscing elit ut aliquam purus sit amet luctus venenatis.</p>",
-    },
-  ],
-};

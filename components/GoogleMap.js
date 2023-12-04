@@ -1,7 +1,10 @@
 // GoogleMap.js
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
+import { useCallback, useState } from "react";
 
-const MapContainer = ({ location }) => {
+const MapContainer = ({ location, markers }) => {
+  const [map, setMap] = useState(null);
+  const [zoom, setZoom] = useState(12);
   const mapStyles = {
     height: "100%",
     width: "100%",
@@ -204,19 +207,47 @@ const MapContainer = ({ location }) => {
         ],
       },
     ],
+    maxZoom: 15,
   };
 
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: "AIzaSyAJYdY_z_t5vpwcIzIuLSXE6BaSJLqWzME",
+  });
+
+  const onLoad = useCallback((map) => {
+    const bounds = new window.google.maps.LatLngBounds(
+      markers?.length > 0 ? markers[0] : defaultCenter,
+    );
+    map.fitBounds(bounds);
+    setMap(map);
+  }, []);
+
+  const onUnmount = useCallback((map) => {
+    setMap(null);
+  }, []);
+
   return (
-    <LoadScript googleMapsApiKey="AIzaSyAJYdY_z_t5vpwcIzIuLSXE6BaSJLqWzME">
+    isLoaded && (
       <GoogleMap
         mapContainerStyle={mapStyles}
-        zoom={13}
-        center={defaultCenter}
+        zoom={zoom}
+        center={markers?.length > 0 ? markers[0] : defaultCenter}
         options={mapOptions}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
       >
-        <Marker position={defaultCenter} />
+        {markers &&
+          markers.length > 0 &&
+          markers.map((item, key) => (
+            <MarkerF
+              key={key}
+              position={item}
+              icon={{ url: "../marker.svg" }}
+            />
+          ))}
       </GoogleMap>
-    </LoadScript>
+    )
   );
 };
 

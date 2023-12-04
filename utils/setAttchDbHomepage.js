@@ -2,6 +2,17 @@ import base64 from "./base64";
 
 const setAttachHomepage = async (data) => {
   let assign = {};
+  if (data["Image"]?.data) {
+    Object.assign(assign, {
+      [data["Image"]?.data?.attributes?.name]: {
+        content_type: data["Image"]?.data?.attributes?.mime,
+        data: await base64(
+          `${process.env.NEXT_PUBLIC_RESTAPI_URL}${data["Image"]?.data?.attributes?.url}`,
+        ),
+      },
+    });
+  }
+
   if (data["Intro"]?.Image?.data) {
     Object.assign(assign, {
       [data["Intro"]?.Image?.data?.attributes?.name]: {

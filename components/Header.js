@@ -39,16 +39,12 @@ export default function Header() {
 
   useEffect(() => {
     if (
-      !isError &&
+      !error &&
       data?.attributes?.items?.data &&
       data?.attributes?.items?.data?.length > 0
     ) {
       dispacth(setMenus(data?.attributes?.items?.data));
       db.get("menus").catch(async (e) => {
-        console.log(
-          await setAttachDbMenu(data?.attributes?.items?.data),
-          "jsjsj",
-        );
         const body = {
           _id: "menus",
           data: data?.attributes?.items?.data,
@@ -63,7 +59,7 @@ export default function Header() {
         })
         .catch((e) => console.warn(e));
     }
-  }, [data, isError]);
+  }, [data, isError, error]);
 
   return (
     <>
@@ -197,8 +193,13 @@ export default function Header() {
                                 <div className="grid grid-cols-2 gap-4 mt-2">
                                   {cat.attributes?.fnbMenus?.data?.map(
                                     (categoryChild, key2) => (
-                                      <button
+                                      <Link
                                         key={key2}
+                                        href={
+                                          categoryChild?.attributes?.Slug
+                                            ? `/menu/${categoryChild?.attributes?.Slug}`
+                                            : "/menu"
+                                        }
                                         className={`bg-white rounded-lg shadow-xl flex ${
                                           cat?.attributes?.Template ===
                                           "Discover"
@@ -211,7 +212,7 @@ export default function Header() {
                                             cat?.attributes?.Template ===
                                             "Discover"
                                               ? "flex flex-col items-center space-y-6 w-full"
-                                              : "w-full flex items-center justify-between space-x-4"
+                                              : "w-full flex items-center space-x-4"
                                           }`}
                                         >
                                           <span
@@ -219,14 +220,14 @@ export default function Header() {
                                               cat.attributes?.Template ===
                                               "Discover"
                                                 ? "text-center"
-                                                : "text-left w-1/2"
+                                                : "w-1/2 lg:w-auto text-left pr-2"
                                             }`}
                                           >
                                             {categoryChild.attributes?.Title}
                                           </span>
                                           {categoryChild.attributes?.Icon?.data
                                             ?.attributes && (
-                                            <figure className="relative aspect-[5/4] lg:aspect-[3/2] w-full flex items-center">
+                                            <figure className="relative aspect-square lg:aspect-[3/2] w-full flex items-center">
                                               <ImageFill
                                                 style={{ objectFit: "contain" }}
                                                 data={
@@ -238,7 +239,7 @@ export default function Header() {
                                             </figure>
                                           )}
                                         </span>
-                                      </button>
+                                      </Link>
                                     ),
                                   )}
                                 </div>
