@@ -1,9 +1,7 @@
 import MenuPage from "@/components/MenuPage";
+import { useRouter } from "next/router";
 
-export default function MenuSlug({ slug }) {
-  return <MenuPage slug={slug} />;
-}
-
-export async function getServerSideProps({ params }) {
-  return { props: { slug: params.slug } };
+export default function MenuSlug() {
+  const route = useRouter()
+  return <MenuPage slug={route?.query?.slug} />;
 }
