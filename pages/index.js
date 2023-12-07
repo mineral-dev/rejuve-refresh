@@ -52,13 +52,7 @@ export default function Home() {
   return (
     <main>
       <MetaSeo data={seo} />
-      {post?.Intro && (
-        <HeaderHero
-          image={post?.Intro?.Image?.data?.attributes}
-          description={md().render(post?.Intro?.Description)}
-          dbtable="homepage"
-        />
-      )}
+
       {post?.Image?.data?.attributes && (
         <figure className="relative aspect-square lg:aspect-[16/5]">
           <ImageHandle
@@ -67,6 +61,15 @@ export default function Home() {
             dbtable="homepage"
           />
         </figure>
+      )}
+
+      {post?.Intro && (
+        <HeaderHero
+          hideImageOnMobile={true}
+          image={post?.Intro?.Image?.data?.attributes}
+          description={md().render(post?.Intro?.Description)}
+          dbtable="homepage"
+        />
       )}
 
       {post?.Showcase && post?.Showcase?.length > 0 && (

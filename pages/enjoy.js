@@ -49,6 +49,7 @@ export default function Enjoy() {
       {<MetaSeo data={seo} />}
       {post?.Intro && (
         <HeaderHero
+          classExtra="hidden lg:block"
           image={post?.Intro?.Image?.data?.attributes}
           description={MarkdownIt().render(post?.Intro?.Description)}
           dbtable="enjoy"
@@ -56,7 +57,7 @@ export default function Enjoy() {
       )}
 
       {post?.Showcase && post?.Showcase?.length > 0 && (
-        <section className="bg-primary-100 pb-12 xl:pb-24">
+        <section className="bg-primary-100 pb-12 xl:pb-24 mt-4 lg:mt-0">
           <div className="wrapper grid lg:grid-cols-2 gap-4">
             {post?.Showcase.map((item, key) => (
               <Card key={key} data={item} dbtable="enjoy" />

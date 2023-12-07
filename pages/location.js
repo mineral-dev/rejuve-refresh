@@ -102,6 +102,7 @@ export default function Location() {
       <MetaSeo data={seo} />
       {post?.Intro && (
         <HeaderHero
+          classExtra="hidden lg:block"
           image={post?.Intro?.Image?.data?.attributes}
           description={MarkdownIt().render(post?.Intro?.Description)}
           dbtable="location"
@@ -109,10 +110,10 @@ export default function Location() {
       )}
 
       <section className="bg-white">
-        <div className="wrapper py-12">
+        <div className="wrapper py-4 lg:py-12">
           <h1 className="text-primary-900">Our Locations</h1>
 
-          <div className="flex flex-col-reverse lg:grid lg:grid-cols-3 gap-8 mt-12">
+          <div className="flex flex-col-reverse lg:grid lg:grid-cols-3 gap-8 mt-4 lg:mt-12">
             <section>
               <div className="grid gap-y-2 divide-y divide-primary-200">
                 {stores &&
@@ -121,6 +122,7 @@ export default function Location() {
                     <StoreItem data={item} key={key} />
                   ))}
               </div>
+              <p className="text-center my-12">&mdash; More Stores coming soon &mdash;</p>
             </section>
             <section className="col-span-2 rounded-xl aspect-square lg:aspect-video">
               {markers && markers?.length > 0 && (
@@ -131,7 +133,7 @@ export default function Location() {
         </div>
       </section>
 
-      {post?.Banner && <BannerFooter data={post?.Banner} dbtable="location" />}
+      {/* {post?.Banner && <BannerFooter data={post?.Banner} dbtable="location" />} */}
     </main>
   );
 }

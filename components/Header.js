@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ImageFill from "./ImageFill";
+import LogoRefresh from "./LogoRefresh";
 
 export default function Header() {
   const menus = useSelector(memoizeMenus);
@@ -64,11 +65,13 @@ export default function Header() {
   return (
     <>
       <header className="sticky z-20 top-0 bg-primary-200 backdrop-blur lg:hidden">
-        <div className="flex items-center justify-between h-11 pl-4">
-          <span className="font-bold">Re.Fresh</span>
+        <div className="flex items-center justify-center h-11 pl-4">
+          <Link href="/">
+            <LogoRefresh classExtra="fill-primary-600 h-7" />
+          </Link>
           <button
             onClick={handleMobileMenu}
-            className="w-11 h-11 flex items-center justify-center"
+            className="w-11 h-11 flex items-center justify-center absolute right-0"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -251,7 +254,7 @@ export default function Header() {
                   </AnimatePresence>
                 </div>
               ))}
-              <div className="bg-primary-200 flex items-center justify-between h-11 pl-4 border-b border-black">
+              {/* <div className="bg-primary-200 flex items-center justify-between h-11 pl-4 border-b border-black">
                 <span className="font-bold">Close</span>
                 <button
                   onClick={handleMobileMenu}
@@ -271,7 +274,7 @@ export default function Header() {
                     />
                   </svg>
                 </button>
-              </div>
+              </div> */}
             </motion.nav>
           )}
         </AnimatePresence>
