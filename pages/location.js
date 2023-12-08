@@ -122,7 +122,9 @@ export default function Location() {
                     <StoreItem data={item} key={key} />
                   ))}
               </div>
-              <p className="text-center my-12">&mdash; More Stores coming soon &mdash;</p>
+              <p className="text-center my-12">
+                &mdash; More Stores coming soon &mdash;
+              </p>
             </section>
             <section className="col-span-2 rounded-xl aspect-square lg:aspect-video">
               {markers && markers?.length > 0 && (

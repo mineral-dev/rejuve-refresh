@@ -184,7 +184,7 @@ export default function MenuPage({ slug, seo: initSeo }) {
       ) : (
         <section className="flex justify-center items-center h-80 my-24 w-auto">
           <div className="flex flex-col space-y-4 items-center">
-            <Image src="/refresh-brand.png" width={200} height={100} />
+            <Image src="/refresh-brand.png" width={200} height={100} alt="Re.juve Refresh" />
             <span className="text-white font-bold uppercase">Not Found</span>
             <Link className="btn-secondary mx-4 mb-4" href="/menu">
               Show All

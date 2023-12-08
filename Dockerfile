@@ -19,18 +19,21 @@ RUN npm run build
 # Expose the port that the app will run on
 EXPOSE 3000
 
-# Add cron job for git pull once a day
-# RUN echo "0 0 * * * cd /usr/src/app && git checkout . && git pull" > /etc/cron.d/git-pull-cron
+# Add a non-root user
+RUN addgroup -g 1001 -S appuser && adduser -u 1001 -S appuser -G appuser
 
-# Give execution rights to the cron job
-# RUN chmod 0644 /etc/cron.d/git-pull-cron
+# Change to the non-root user
+USER appuser
 
-# Apply cron job
-# RUN crontab /etc/cron.d/git-pull-cron
+# Uncomment the following lines to add a daily git pull cron job
+# RUN echo "0 0 * * * cd /usr/src/app && git checkout . && git pull" > /etc/crontabs/appuser
+# RUN crontab /etc/crontabs/appuser
 
-# Create the log file to redirect the cron job output
+# Uncomment the following line to create the log file
 # RUN touch /var/log/cron.log
 
-# Run the cron in the foreground
-# CMD cron && npm start
+# Uncomment the following line to run the cron in the foreground
+# CMD crond -f
+
+# Run the Next.js application
 CMD npm start
