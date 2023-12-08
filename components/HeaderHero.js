@@ -10,7 +10,7 @@ export default function HeaderHero({
   dbtable,
 }) {
   return (
-    <section className={`bg-primary-100 ${classExtra}`}>
+    <section className={`bg-white ${classExtra}`}>
       <div className="wrapper grid lg:grid-cols-2 gap-y-6 lg:gap-0 py-4 lg:py-12">
         <div
           className={`items-center justify-center ${

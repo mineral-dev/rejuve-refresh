@@ -16,10 +16,10 @@ export default function SlideMenus({ data, imageDb }) {
   // }, [data])
 
   return (
-    <section className="MenuSwiper relative my-12">
+    <section className="MenuSwiper flex-grow relative flex items-center lg:py-8">
       <Swiper
         onSwiper={(swiper) => (swiperRef.current = swiper)}
-        slidesPerView={1.35}
+        
         effect={"coverflow"}
         grabCursor={true}
         centeredSlides={true}
@@ -30,8 +30,19 @@ export default function SlideMenus({ data, imageDb }) {
           modifier: 1,
           slideShadows: true,
         }}
-        pagination={true}
+        // pagination={true}
         modules={[EffectCoverflow, Pagination]}
+        breakpoints={{
+          0: {
+            slidesPerView: 1.3
+          },
+          640: {
+            slidesPerView: 1.55
+          },
+          1280: {
+            slidesPerView: 2.8
+          }
+        }}
       >
         {data?.map((item, key) => (
           <SwiperSlide key={key}>

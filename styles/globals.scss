@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --swiper-pagination-color: #5A2E90;
+  --swiper-pagination-bottom: -2rem;
+}
+
 html {
   @apply bg-primary-100;
 }
@@ -74,7 +79,7 @@ h5,
 
   &-outline {
     @apply border-2 border-black rounded-full;
-    @apply hover:bg-primary-100;
+    @apply hover:bg-black hover:text-white;
     @apply px-8 xl:px-12;
   }
 }
@@ -87,6 +92,18 @@ h5,
   &-outline {
     @apply border-2 border-primary-600 rounded-full;
     @apply hover:bg-primary-100;
+    @apply px-8 xl:px-12;
+  }
+}
+
+.btn-white {
+  @apply border-2 border-transparent bg-white text-black rounded-full;
+  @apply hover:bg-primary-100;
+  @apply px-8 xl:px-12;
+
+  &-outline {
+    @apply border-2 border-white text-white rounded-full;
+    @apply hover:bg-white hover:text-black;
     @apply px-8 xl:px-12;
   }
 }
@@ -108,7 +125,7 @@ h5,
 }
 
 .btn-swiper {
-  @apply absolute z-10 top-1/2 -translate-y-1/2;
+  @apply absolute hidden lg:block z-10 top-1/2 -translate-y-1/2;
 
   &.prev {
     @apply left-0;

@@ -89,16 +89,62 @@ export default function MenuPage({ slug, seo: initSeo }) {
   }, [fnbMenus, slug]);
 
   return (
-    <main className="flex-grow bg-[url('/bg_menu.jpg')]">
+    <main className="flex-grow bg-[url('/bg_menu.jpg')] flex flex-col">
       <MetaSeo data={seo} />
-      <section className="Category bg-primary-200 hidden lg:grid grid-cols-4 border-t-4 border-primary-600">
+
+      <section className="CategoryMobile lg:hidden ">
+        <div className="w-full bg-white overflow-x-scroll py-2 px-4">
+          <div className="flex space-x-4 w-[5000px]">
+            <section className="w-20">
+              <div className="bg-primary-100 p-2 rounded-full">
+                <figure className="aspect-square grid place-content-center">
+                  <svg id="Group_3" data-name="Group 3" xmlns="http://www.w3.org/2000/svg" width="25" height="26" viewBox="0 0 25 26">
+                    <rect id="Rectangle_2" data-name="Rectangle 2" width="11" height="11" rx="4" fill="#ccbfdd"/>
+                    <rect id="Rectangle_3" data-name="Rectangle 3" width="11" height="11" rx="4" transform="translate(0 15)" fill="#ccbfdd"/>
+                    <rect id="Rectangle_4" data-name="Rectangle 4" width="11" height="11" rx="4" transform="translate(14 15)" fill="#ccbfdd"/>
+                    <rect id="Rectangle_5" data-name="Rectangle 5" width="11" height="11" rx="5.5" transform="translate(14)" fill="#ccbfdd"/>
+                  </svg>
+                </figure>
+              </div>
+              <div className="text-center mt-2 text-sm sm:text-md">
+                Lihat Semua
+              </div>
+            </section>
+            {activeMenu?.attributes?.fnbMenus?.data &&
+              activeMenu?.attributes?.fnbMenus?.data?.map((item, key) => (
+                <section key={key} className="w-20">
+                  <div className="bg-primary-100 border-2 border-transparent hover:border-primary-900 p-2 rounded-lg">
+                    <figure
+                      className={`relative aspect-square`}
+                    >
+                      {item?.attributes?.Icon?.data?.attributes && (
+                        <ImageHandle
+                          style={{ objectFit: "contain" }}
+                          data={item.attributes?.Icon?.data?.attributes}
+                          dbtable="categories"
+                        />
+                      )}
+                    </figure>
+                  </div>
+                  <div className="text-center mt-2 text-sm sm:text-md">
+                    {item.attributes?.Title}
+                  </div>
+                </section>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+
+      <section className="CategoryDesktop bg-primary-200 hidden lg:grid grid-cols-4 border-t-4 border-primary-600">
         <aside className="ParentCategory flex flex-col justify-between bg-primary-100">
           <div className="grid">
             {categories.map((item, key) => (
               <button
                 onClick={() => setActiveMenu(item)}
                 key={key}
-                className={`flex items-center justify-between text-black text-left h-14 px-8 ${
+                className={`flex items-center justify-between text-black text-left h-14 px-8 transition duration-500 hover:bg-primary-200 ${
                   slug === item.attributes?.Slug ? "bg-primary-200" : ""
                 }`}
               >
@@ -123,16 +169,16 @@ export default function MenuPage({ slug, seo: initSeo }) {
               </button>
             ))}
           </div>
-          <Link href="/menu" className="btn-secondary mx-4 mb-4">
+          <Link href="/menu" className="btn-primary-outline mx-4 mb-4">
             Show All
           </Link>
         </aside>
-        <main className={`col-span-3 min-h-[300px] grid gap-4 p-6 grid-cols-4`}>
+        <main className={`col-span-3 min-h-[270px] grid gap-4 p-6 grid-cols-4`}>
           {activeMenu?.attributes?.fnbMenus?.data &&
             activeMenu?.attributes?.fnbMenus?.data?.map((item, key) => (
               <Link
                 key={key}
-                className={`bg-white rounded-lg transition ease-out-expo duration-500 hover:scale-105 hover:shadow-xl flex justify-center ${
+                className={`bg-white rounded-lg transition ease-out-expo duration-500 xl:hover:scale-105 xl:hover:shadow-xl flex justify-center ${
                   activeMenu.attributes?.Template === "Discover"
                     ? "py-4 px-2"
                     : "items-center px-4"
@@ -151,7 +197,7 @@ export default function MenuPage({ slug, seo: initSeo }) {
                   }`}
                 >
                   <span
-                    className={`font-bold text-primary-600 text-left ${
+                    className={`font-bold text-black text-left ${
                       activeMenu.attributes?.Template === "Discover"
                         ? ""
                         : "flex-grow"
@@ -163,8 +209,8 @@ export default function MenuPage({ slug, seo: initSeo }) {
                     <figure
                       className={`relative w-full flex items-center ${
                         activeMenu.attributes?.Template === "Discover"
-                          ? "aspect-[3/2]"
-                          : "aspect-square w-1/3"
+                          ? "aspect-video"
+                          : "aspect-video flex justify-end"
                       }`}
                     >
                       <ImageHandle
@@ -179,14 +225,15 @@ export default function MenuPage({ slug, seo: initSeo }) {
             ))}
         </main>
       </section>
+
+
       {slideMenu.length > 0 ? (
         <SlideMenus data={slideMenu} imageDb="fnb" />
       ) : (
-        <section className="flex justify-center items-center h-80 my-24 w-auto">
+        <section className="flex-grow flex justify-center items-center h-80 my-24 w-auto">
           <div className="flex flex-col space-y-4 items-center">
-            <Image src="/refresh-brand.png" width={200} height={100} alt="Re.juve Refresh" />
-            <span className="text-white font-bold uppercase">Not Found</span>
-            <Link className="btn-secondary mx-4 mb-4" href="/menu">
+            <span className="text-white font-bold">We are preparing something new. Stay Tune.</span>
+            <Link className="btn-white-outline mx-4 mb-4" href="/menu">
               Show All
             </Link>
           </div>

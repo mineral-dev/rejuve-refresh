@@ -110,45 +110,183 @@ export default function Header() {
               className="MobileMenu bg-primary-100 grid divide-y divide-black/10 max-h-[calc(100dvh_-_44px)] overflow-y-auto"
             >
               {menus.map((item, key) => (
-                <Link key={key} 
-                  className={`relative flex items-center justify-between pl-4 h-11 sm:h-14`}
-                  href={item?.attributes?.url}
-                  onClick={() => handleMobileMenu()}
-                >
-                  <span
-                    className="flex items-center space-x-2 cursor-pointer"
+                <div key={key} onClick={handleFoodMenu}>
+                  <div
+                    className={`relative flex items-center justify-between pl-4 ${
+                      item.attributes?.FnbCategories?.data?.length > 0
+                        ? ""
+                        : "h-11"
+                    }`}
                   >
-                    <span className="w-8 flex justify-center [&>svg]:h-7">
-                      {item.attributes?.Image?.data?.attributes && (
-                        <figure className="flex flex-grow relative aspect-square">
-                          <ImageFill
-                            style={{ objectFit: "contain" }}
-                            data={item.attributes?.Image?.data?.attributes}
-                            dbtable="menus"
-                          />
-                        </figure>
-                      )}
-                    </span>
-                    {item?.attributes?.title && (
-                      <span className="font-bold">
-                        {item?.attributes?.title}
+                    <Link
+                      href={
+                        item.attributes?.FnbCategories?.data?.length == 0
+                          ? item?.attributes?.url
+                          : "#"
+                      }
+                      onClick={() => handleMobileMenu()}
+                      className="flex items-center space-x-2 cursor-pointer"
+                    >
+                      <span className="w-8 flex justify-center [&>svg]:h-7">
+                        {item.attributes?.Image?.data?.attributes && (
+                          <figure className="flex flex-grow relative aspect-square">
+                            <ImageFill
+                              style={{ objectFit: "contain" }}
+                              data={item.attributes?.Image?.data?.attributes}
+                              dbtable="menus"
+                            />
+                          </figure>
+                        )}
                       </span>
+                      {item?.attributes?.title && (
+                        <span className="font-bold">
+                          {item?.attributes?.title}
+                        </span>
+                      )}
+                    </Link>
+                    {(item.attributes?.FnbCategories?.data?.length > 0 ||
+                      item.attributes?.items) && (
+                      <button className="w-11 h-11 flex items-center justify-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="11.442"
+                          height="7.313"
+                          viewBox="0 0 11.442 7.313"
+                          className={`transition ${
+                            isFoodMenu ? "-rotate-180" : ""
+                          }`}
+                        >
+                          <path
+                            id="mainMenuDownNonHover"
+                            d="M.882,2.722,5.006,6.846a1.6,1.6,0,0,0,2.255,0l4.124-4.124A1.594,1.594,0,0,0,10.257,0H2.01A1.6,1.6,0,0,0,.882,2.722Z"
+                            transform="translate(-0.412)"
+                            fill="#5a2e90"
+                          />
+                        </svg>
+                      </button>
                     )}
-                  </span>
-                </Link>
+                  </div>
+                  <AnimatePresence key={key}>
+                    {item.attributes?.FnbCategories?.data?.length > 0 &&
+                      isFoodMenu && (
+                        <motion.section
+                          initial={{
+                            opacity: 0,
+                            y: -16,
+                            transition: {
+                              duration: 0.3,
+                            },
+                          }}
+                          animate={{
+                            opacity: 1,
+                            y: 0,
+                          }}
+                          exit={{
+                            opacity: 0,
+                            y: -16,
+                          }}
+                          className="grid gap-4 p-4"
+                        >
+                          {item.attributes?.FnbCategories?.data?.map(
+                            (cat, key) => (
+                              <div key={key}>
+                                <p className="font-bold">
+                                  {cat.attributes?.Title}
+                                </p>
+                                <div className="grid grid-cols-2 gap-4 mt-2">
+                                  {cat.attributes?.fnbMenus?.data?.map(
+                                    (categoryChild, key2) => (
+                                      <Link
+                                        key={key2}
+                                        href={
+                                          categoryChild?.attributes?.Slug
+                                            ? `/menu/${categoryChild?.attributes?.Slug}`
+                                            : "/menu"
+                                        }
+                                        className={`bg-white rounded-lg shadow-xl flex ${
+                                          cat?.attributes?.Template ===
+                                          "Discover"
+                                            ? "p-4"
+                                            : "items-center p-4"
+                                        }`}
+                                      >
+                                        <span
+                                          className={`${
+                                            cat?.attributes?.Template ===
+                                            "Discover"
+                                              ? "flex flex-col items-center space-y-6 w-full"
+                                              : "w-full flex items-center space-x-4"
+                                          }`}
+                                        >
+                                          <span
+                                            className={`font-bold block text-primary-900 text-sm ${
+                                              cat.attributes?.Template ===
+                                              "Discover"
+                                                ? "text-center"
+                                                : "w-1/2 lg:w-auto text-left pr-2"
+                                            }`}
+                                          >
+                                            {categoryChild.attributes?.Title}
+                                          </span>
+                                          {categoryChild.attributes?.Icon?.data
+                                            ?.attributes && (
+                                            <figure className="relative aspect-square lg:aspect-[3/2] w-full flex items-center">
+                                              <ImageFill
+                                                style={{ objectFit: "contain" }}
+                                                data={
+                                                  categoryChild.attributes?.Icon
+                                                    ?.data?.attributes
+                                                }
+                                                dbtable="menus"
+                                              />
+                                            </figure>
+                                          )}
+                                        </span>
+                                      </Link>
+                                    ),
+                                  )}
+                                </div>
+                              </div>
+                            ),
+                          )}
+                        </motion.section>
+                      )}
+                  </AnimatePresence>
+                </div>
               ))}
+              {/* <div className="bg-primary-200 flex items-center justify-between h-11 pl-4 border-b border-black">
+                <span className="font-bold">Close</span>
+                <button
+                  onClick={handleMobileMenu}
+                  className="w-11 h-11 flex items-center justify-center"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="11.442"
+                    height="7.313"
+                    viewBox="0 0 11.442 7.313"
+                  >
+                    <path
+                      id="mainMenuDownNonHover"
+                      d="M.882,4.591,5.006.467a1.6,1.6,0,0,1,2.255,0l4.124,4.124a1.594,1.594,0,0,1-1.127,2.722H2.01A1.6,1.6,0,0,1,.882,4.591Z"
+                      transform="translate(-0.412)"
+                      fill="#5a2e90"
+                    />
+                  </svg>
+                </button>
+              </div> */}
             </motion.nav>
           )}
         </AnimatePresence>
       </header>
 
-      <header className="sticky z-10 top-0 bg-primary-200/80 backdrop-blur hidden lg:flex justify-center space-x-8 pt-4 pb-6">
+      <header className="sticky z-10 top-0 bg-primary-200/80 backdrop-blur hidden lg:flex justify-center space-x-8 py-8">
         {menus.map((item, key) => (
           <Link
             key={key}
             href={item.attributes?.url}
             className={`relative flex flex-col items-center space-y-1 hover:text-primary-600 group ${
-              asPath === item.attributes?.url ? "" : ""
+              asPath === item.attributes?.url ? "text-primary-600" : ""
             }`}
             onMouseEnter={() =>
               setHover({ status: true, name: item?.attributes?.title })
@@ -156,7 +294,7 @@ export default function Header() {
             onMouseLeave={() => setHover({ status: false, name: "" })}
           >
             {item.attributes?.Image?.data?.attributes && (
-              <figure className="flex flex-grow relative h-10 w-full">
+              <figure className="flex flex-grow relative aspect-[3/2] w-full">
                 <ImageFill
                   style={{
                     objectFit: "scale-down",
@@ -173,7 +311,7 @@ export default function Header() {
             )}
             <span className="font-bold">{item.attributes?.title}</span>
             {asPath === item.attributes?.url && (
-              <span className="absolute -bottom-3 content-[''] w-2 h-2 bg-primary-600 rounded-full"></span>
+              <span className="absolute -bottom-4 content-[''] w-2 h-2 bg-primary-600 rounded-full"></span>
             )}
           </Link>
         ))}

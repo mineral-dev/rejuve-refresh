@@ -290,7 +290,7 @@ export function MenuThumb({ data, index, isActive }) {
 
       {isActive && data?.Cta?.Link && (
         <div className="absolute bottom-0 right-1/2 translate-x-1/2 justify-center mt-12">
-          <Link href={data?.Cta?.Link} className="btn-secondary">
+          <Link href={data?.Cta?.Link} className="btn-primary-outline">
             {data?.Cta?.Caption}
           </Link>
         </div>
