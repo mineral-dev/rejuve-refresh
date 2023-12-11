@@ -4,7 +4,6 @@ import db from "@/db/db";
 import { useGetCategoriesQuery, useGetFnbQuery } from "@/store/services/api";
 import setAttachCategories from "@/utils/setAttchDbCategories";
 import setAttachFnb from "@/utils/setAttchDbFnb";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import "swiper/css";
@@ -18,6 +17,7 @@ export default function MenuPage({ slug, seo: initSeo }) {
   const [categories, setCategories] = useState([]);
   const [fnbMenus, setFnbMenus] = useState([]);
   const [slideMenu, setSlideMenu] = useState([]);
+  const [slideMenuMobile, setSlideMenuMobile] = useState([]);
   const {
     data: dataCat,
     isError: isErrorCat,
@@ -29,10 +29,21 @@ export default function MenuPage({ slug, seo: initSeo }) {
     error: errorFnb,
   } = useGetFnbQuery();
 
+  const handleMenuCatMobile = (data) => {
+    let menuMobile = []
+    data.map((item)=> {
+      item.attributes?.fnbMenus?.data?.map((menu)=> {
+        menuMobile.push(menu)
+      })
+    })
+    setSlideMenuMobile(menuMobile)
+  }
+
   useEffect(() => {
     if (!errorCat && dataCat?.length > 0) {
       setCategories(dataCat);
       setActiveMenu(dataCat[0]);
+      handleMenuCatMobile(dataCat)
 
       db.get("categories").catch(async (e) => {
         const body = {
@@ -47,6 +58,7 @@ export default function MenuPage({ slug, seo: initSeo }) {
         .then(function (doc) {
           setCategories(doc?.data);
           setActiveMenu(doc?.data[0]);
+          handleMenuCatMobile(doc?.data)
         })
         .catch((e) => console.warn(e));
     }
@@ -95,7 +107,7 @@ export default function MenuPage({ slug, seo: initSeo }) {
       <section className="CategoryMobile lg:hidden ">
         <div className="w-full bg-white overflow-x-scroll py-2 px-4">
           <div className="flex space-x-4 w-[5000px]">
-            <section className="w-20">
+            <Link href="/menu" className="w-20">
               <div className="bg-primary-100 p-2 rounded-full">
                 <figure className="aspect-square grid place-content-center">
                   <svg id="Group_3" data-name="Group 3" xmlns="http://www.w3.org/2000/svg" width="25" height="26" viewBox="0 0 25 26">
@@ -109,10 +121,10 @@ export default function MenuPage({ slug, seo: initSeo }) {
               <div className="text-center mt-2 text-sm sm:text-md">
                 Lihat Semua
               </div>
-            </section>
-            {activeMenu?.attributes?.fnbMenus?.data &&
-              activeMenu?.attributes?.fnbMenus?.data?.map((item, key) => (
-                <section key={key} className="w-20">
+            </Link>
+            {slideMenuMobile &&
+              slideMenuMobile?.map((item, key) => (
+                <Link href={item?.attributes?.Slug ? `/menu/${item?.attributes?.Slug}` : '#'} key={key} className="w-20">
                   <div className="bg-primary-100 border-2 border-transparent hover:border-primary-900 p-2 rounded-lg">
                     <figure
                       className={`relative aspect-square`}
@@ -129,7 +141,7 @@ export default function MenuPage({ slug, seo: initSeo }) {
                   <div className="text-center mt-2 text-sm sm:text-md">
                     {item.attributes?.Title}
                   </div>
-                </section>
+                </Link>
               ))
             }
           </div>
