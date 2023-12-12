@@ -7,6 +7,15 @@
   --swiper-pagination-bottom: -2rem;
 }
 
+@font-face {
+  font-family: 'Akbar';
+  src: url('/Akbar.woff2') format('woff2'),
+       url('/Akbar.woff') format('woff');
+  /* Add more src lines for different font formats if needed */
+  font-weight: normal;
+  font-style: normal;
+}
+
 html {
   @apply bg-primary-100;
 }
@@ -20,6 +29,24 @@ body {
   @apply mx-auto;
   @apply px-4 lg:px-8;
   @apply xl:max-w-screen-xl;
+}
+
+
+.custom-scroll {
+  &::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgb(255,255,255,0);
+    // @apply rounded-lg;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgb(255,255,255,0);
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgb(255,255,255,0);
+  }
 }
 
 h1,
@@ -49,15 +76,23 @@ h5,
 }
 
 .prose {
+  @apply max-w-none;
   @apply prose-h1:text-2xl prose-h1:lg:text-5xl;
   @apply prose-h2:text-2xl prose-h2:lg:text-4xl;
   @apply prose-h3:text-2xl prose-h3:lg:text-3xl;
   @apply prose-h4:text-2xl prose-h4:lg:text-2xl;
   @apply prose-h5:lg:text-xl;
+  @apply prose-p:lg:text-lg;
 
   @apply prose-headings:mb-4;
   @apply prose-h5:mb-0;
   @apply prose-p:mt-0;
+}
+
+.prose em,
+.em-akbar em {
+  @apply font-akbar;
+  font-style: unset;
 }
 
 [class^="btn-"] {

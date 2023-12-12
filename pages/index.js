@@ -140,7 +140,7 @@ export default function Home() {
         <section className="bg-[#FCEADF] py-12 xl:py-24 overflow-hidden">
           <div className="wrapper text-center">
             {post?.Slideshow?.Title && (
-              <div className="h2">{post?.Slideshow?.Title}</div>
+              <div className="h2 em-akbar" dangerouslySetInnerHTML={{__html:post?.Slideshow?.Title}}></div>
             )}
           </div>
           {post?.Slideshow?.Slideshow &&
@@ -243,13 +243,13 @@ export function MenuThumb({ data, index, isActive }) {
         )}
 
         {isActive && data?.Description && (
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col justify-center">
             <div className="h5 font-bold text-primary-600">{data?.Title}</div>
             <article
               dangerouslySetInnerHTML={{
                 __html: md().render(data.Description),
               }}
-              className="prose prose-headings:text-primary-600 prose-p:text-sm text-center"
+              className="prose prose-headings:text-primary-600 prose-p:text-sm prose-p:sm:text-base mt-2"
             ></article>
           </div>
         )}

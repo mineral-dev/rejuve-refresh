@@ -1,17 +1,21 @@
-import ImageHandle from "@/components/ImageFill";
+import ImageFill from "@/components/ImageFill";
 import SlideMenus from "@/components/SlideMenus";
 import db from "@/db/db";
 import { useGetCategoriesQuery, useGetFnbQuery } from "@/store/services/api";
 import setAttachCategories from "@/utils/setAttchDbCategories";
 import setAttachFnb from "@/utils/setAttchDbFnb";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "swiper/css";
-import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
+import "swiper/scss/mousewheel"
 import MetaSeo from "./MetaHead";
+import ImageWidth from "./ImageWidth";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode, Mousewheel } from "swiper/modules"
+
 
 export default function MenuPage({ slug, seo: initSeo }) {
+  const swiperRef = useRef();
   const [seo, setSeo] = useState(initSeo);
   const [activeMenu, setActiveMenu] = useState({});
   const [categories, setCategories] = useState([]);
@@ -104,59 +108,63 @@ export default function MenuPage({ slug, seo: initSeo }) {
     <main className="flex-grow bg-[url('/bg_menu.jpg')] flex flex-col">
       <MetaSeo data={seo} />
 
-      <section className="CategoryMobile lg:hidden ">
-        <div className="w-full bg-white overflow-x-scroll py-2 px-4">
-          <div className="flex space-x-4 w-[5000px]">
-            <Link href="/menu" className="w-20">
-              <div className="bg-primary-100 p-2 rounded-full">
-                <figure className="aspect-square grid place-content-center">
-                  <svg id="Group_3" data-name="Group 3" xmlns="http://www.w3.org/2000/svg" width="25" height="26" viewBox="0 0 25 26">
-                    <rect id="Rectangle_2" data-name="Rectangle 2" width="11" height="11" rx="4" fill="#ccbfdd"/>
-                    <rect id="Rectangle_3" data-name="Rectangle 3" width="11" height="11" rx="4" transform="translate(0 15)" fill="#ccbfdd"/>
-                    <rect id="Rectangle_4" data-name="Rectangle 4" width="11" height="11" rx="4" transform="translate(14 15)" fill="#ccbfdd"/>
-                    <rect id="Rectangle_5" data-name="Rectangle 5" width="11" height="11" rx="5.5" transform="translate(14)" fill="#ccbfdd"/>
-                  </svg>
-                </figure>
-              </div>
-              <div className="text-center mt-2 text-sm sm:text-md">
-                Lihat Semua
-              </div>
-            </Link>
-            {slideMenuMobile &&
-              slideMenuMobile?.map((item, key) => (
-                <Link href={item?.attributes?.Slug ? `/menu/${item?.attributes?.Slug}` : '#'} key={key} className="w-20">
-                  <div className="bg-primary-100 border-2 border-transparent hover:border-primary-900 p-2 rounded-lg">
-                    <figure
-                      className={`relative aspect-square`}
-                    >
-                      {item?.attributes?.Icon?.data?.attributes && (
-                        <ImageHandle
-                          style={{ objectFit: "contain" }}
-                          data={item.attributes?.Icon?.data?.attributes}
-                          dbtable="categories"
-                        />
-                      )}
-                    </figure>
-                  </div>
-                  <div className="text-center mt-2 text-sm sm:text-md">
-                    {item.attributes?.Title}
-                  </div>
-                </Link>
-              ))
+      <section className="CategoryMobile bg-white py-4 lg:hidden">
+        <Swiper            
+          onSwiper={(swiper) => (swiperRef.current = swiper)}        
+          modules={[Mousewheel, FreeMode]} 
+          direction="horizontal"
+          mousewheel={{
+            forceToAxis: true,
+          }}
+          freeMode
+          breakpoints={{
+            0: {
+              slidesPerView: 2.5
+            },
+            414: {
+              slidesPerView: 3
+            },
+            640: {
+              slidesPerView: 4.8
             }
-          </div>
-        </div>
+          }}
+          spaceBetween={16}
+          slidesOffsetBefore={16}
+          slidesOffsetAfter={32}
+        >
+          {slideMenuMobile?.map((item, key) => (
+            <SwiperSlide key={key}>
+              <Link href={item?.attributes?.Slug ? `/menu/${item?.attributes?.Slug}` : '#'} key={key}>
+                <div className="bg-primary-100 border-2 border-transparent hover:border-primary-900 py-1 rounded-lg">
+                  <figure
+                    className={`relative h-10 grid place-items-center mx-auto`}
+                  >
+                    {item?.attributes?.Icon?.data?.attributes && (
+                      <ImageFill
+                        style={{ objectFit: "contain" }}
+                        data={item.attributes?.Icon?.data?.attributes}
+                        dbtable="categories"
+                      />
+                    )}
+                  </figure>
+                </div>
+                <div className="text-center font-bold mt-2 text-xs">
+                  {item.attributes?.Title}
+                </div>
+              </Link>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </section>
 
-
-      <section className="CategoryDesktop bg-primary-200 hidden lg:grid grid-cols-4 border-t-4 border-primary-600">
-        <aside className="ParentCategory flex flex-col justify-between bg-primary-100">
+      <section className="CategoryDesktop bg-slate-200 hidden lg:grid grid-cols-4">
+        <aside className="ParentCategory flex flex-col justify-between bg-white">
           <div className="grid">
             {categories.map((item, key) => (
               <button
                 onClick={() => setActiveMenu(item)}
                 key={key}
-                className={`flex items-center justify-between text-black text-left h-14 px-8 transition duration-500 hover:bg-primary-200 ${
+                className={`flex items-center justify-between text-black text-left h-14 px-8 transition duration-500 hover:bg-slate-200 ${
                   slug === item.attributes?.Slug ? "bg-primary-200" : ""
                 }`}
               >
@@ -225,7 +233,7 @@ export default function MenuPage({ slug, seo: initSeo }) {
                           : "aspect-video flex justify-end"
                       }`}
                     >
-                      <ImageHandle
+                      <ImageFill
                         style={{ objectFit: "contain" }}
                         data={item.attributes?.Icon?.data?.attributes}
                         dbtable="categories"

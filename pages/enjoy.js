@@ -47,9 +47,10 @@ export default function Enjoy() {
   return (
     <main className="flex-grow flex flex-col justify-between">
       {<MetaSeo data={seo} />}
+
       {post?.Intro && (
         <HeaderHero
-          classExtra="hidden lg:block"
+          hideImageOnMobile
           image={post?.Intro?.Image?.data?.attributes}
           description={MarkdownIt().render(post?.Intro?.Description)}
           dbtable="enjoy"
@@ -57,7 +58,7 @@ export default function Enjoy() {
       )}
 
       {post?.Showcase && post?.Showcase?.length > 0 && (
-        <section className="bg-primary-100 pb-12 xl:pb-24 mt-4 lg:mt-0">
+        <section className="bg-primary-100 pb-12 xl:py-12 mt-4 lg:mt-0">
           <div className="wrapper grid lg:grid-cols-2 gap-4">
             {post?.Showcase.map((item, key) => (
               <Card key={key} data={item} dbtable="enjoy" />
@@ -85,7 +86,7 @@ export function Card({ data, dbtable }) {
       )}
       <div
         style={{ backgroundColor: data?.ColorBg ? data?.ColorBg : "#F8D5C0" }}
-        className="flex flex-col items-center space-y-4 text-center rounded-t-xl lg:rounded-t-0 rounded-b-xl p-8"
+        className="flex flex-col items-center space-y-4 text-center rounded-t-xl lg:rounded-t-none rounded-b-xl p-8"
       >
         {data?.Icon?.data?.attributes && (
           <figure className="relative w-24 h-24">

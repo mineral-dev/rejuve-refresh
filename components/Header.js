@@ -64,7 +64,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky z-20 top-0 bg-primary-200 backdrop-blur lg:hidden">
+      {/* <header className="HeaderMobile sticky z-20 top-0 bg-primary-200 backdrop-blur lg:hidden">
         <div className="flex items-center justify-center h-11 pl-4">
           <Link href="/">
             <LogoRefresh classExtra="fill-primary-600 h-7" />
@@ -140,43 +140,29 @@ export default function Header() {
             </motion.nav>
           )}
         </AnimatePresence>
-      </header>
+      </header> */}
 
-      <header className="sticky z-10 top-0 bg-primary-200/80 backdrop-blur hidden lg:flex justify-center space-x-8 pt-4 pb-6">
-        {menus.map((item, key) => (
-          <Link
-            key={key}
-            href={item.attributes?.url}
-            className={`relative flex flex-col items-center space-y-1 hover:text-primary-600 group ${
-              asPath === item.attributes?.url ? "" : ""
-            }`}
-            onMouseEnter={() =>
-              setHover({ status: true, name: item?.attributes?.title })
-            }
-            onMouseLeave={() => setHover({ status: false, name: "" })}
-          >
-            {item.attributes?.Image?.data?.attributes && (
-              <figure className="flex flex-grow relative h-10 w-full">
-                <ImageFill
-                  style={{
-                    objectFit: "scale-down",
-                    filter:
-                      (hover && item?.attributes?.title === hover?.name) ||
-                      asPath === item.attributes?.url
-                        ? "brightness(0) saturate(100%) invert(25%) sepia(42%) saturate(2420%) hue-rotate(277deg) brightness(94%) contrast(87%)"
-                        : "",
-                  }}
-                  data={item.attributes?.Image?.data?.attributes}
-                  dbtable="menus"
-                />
-              </figure>
-            )}
-            <span className="font-bold">{item.attributes?.title}</span>
-            {asPath === item.attributes?.url && (
-              <span className="absolute -bottom-3 content-[''] w-2 h-2 bg-primary-600 rounded-full"></span>
-            )}
-          </Link>
-        ))}
+      <header className="Header fixed sm:sticky z-10 bottom-0 sm:bottom-[unset] sm:top-0 inset-x-0 bg-slate-100 backdrop-blur border-t sm:border-t-0 py-4">
+        <div className="wrapper flex justify-center divide-x-2">
+          {menus.map((item, key) => (
+            <Link
+              key={key}
+              href={item.attributes?.url}
+              className={`flex flex-col items-center space-y-1 hover:text-primary-600 px-8 group ${
+                asPath === item.attributes?.url ? "text-primary-600" : ""
+              }`}
+            >
+              <span className="relative">
+                <span className="font-bold text-sm flex">{item.attributes?.title}</span>
+                {
+                  key !== 0 && (
+                    <span className={`absolute -bottom-4 inset-x-0 content-[''] h-[4px] bg-primary-600 rounded-t-full transition-opacity duration-500 ${asPath === item.attributes?.url ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></span>
+                  )
+                }
+              </span>
+            </Link>
+          ))}
+        </div>
       </header>
     </>
   );

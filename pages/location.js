@@ -122,7 +122,7 @@ export default function Location() {
                     <StoreItem data={item} key={key} />
                   ))}
               </div>
-              <p className="text-center my-12">
+              <p className="text-center text-xl my-12">
                 &mdash; More Stores coming soon &mdash;
               </p>
             </section>

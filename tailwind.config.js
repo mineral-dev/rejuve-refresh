@@ -14,6 +14,7 @@ module.exports = {
       },
       fontFamily: {
         body: ["ibm-plex-sans", "Arial", "sans-serif"],
+        akbar: ["Akbar", "Arial", "sans-serif"]
       },
       colors: {
         primary: {
