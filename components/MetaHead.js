@@ -13,7 +13,7 @@ export default function MetaSeo({
     description:
       "Cold-Pressed Juice (jus) dari sayuran organik dan buah-buahan segar serta paket detox kami sudah dapat diorder online. #LiveHappier",
     type: "website",
-    image: "https://static.mineralcdn.net/site/potatoheadco/og_image.png",
+    image: "https://static.mineralcdn.net/site/rejuvecoid/og_image_refresh.png",
     viewport: "width=device-width, initial-scale=1 maximum-scale=1",
   };
 

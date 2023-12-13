@@ -1,6 +1,20 @@
 # Use an official Node.js runtime as a parent image
 FROM node:18-alpine
 
+# Install SSH client and Git
+RUN apk --no-cache add openssh-client git
+
+# Copy SSH keys into the container (adjust the paths accordingly)
+COPY  ./id_rsa /root/.ssh/id_rsa
+COPY  ./known_hosts /root/.ssh/known_hosts
+
+# Set correct permissions on the SSH keys
+RUN chmod 600 /root/.ssh/id_rsa
+
+# Set the Git user configuration (optional)
+RUN git config --global user.email "rejuve-refresh@rejuve.co.id" && \
+    git config --global user.name "Rejuve Refresh"
+
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
@@ -22,6 +36,9 @@ EXPOSE 3000
 # Add a non-root user
 RUN addgroup -g 1001 -S appuser && adduser -u 1001 -S appuser -G appuser
 
+# Change the ownership of the application files to the non-root user
+RUN chown -R appuser:appuser /usr/src/app
+
 # Change to the non-root user
 USER appuser
 
@@ -36,4 +53,4 @@ USER appuser
 # CMD crond -f
 
 # Run the Next.js application
-CMD npm start
+CMD ["sh", "-c", "git config --global --add safe.directory /usr/src/app && npm start"]

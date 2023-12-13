@@ -39,6 +39,9 @@ export default function SlideMenus({ data, imageDb }) {
           640: {
             slidesPerView: 1.55
           },
+          719: {
+            slidesPerView: 1.4
+          },
           1280: {
             slidesPerView: 2.8
           }
