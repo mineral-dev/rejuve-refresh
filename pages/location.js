@@ -126,7 +126,7 @@ export default function Location() {
                 &mdash; More Stores coming soon &mdash;
               </p>
             </section>
-            <section className="col-span-2 rounded-xl aspect-square lg:aspect-video">
+            <section className="col-span-2 rounded-xl aspect-square sm:aspect-video">
               {markers && markers?.length > 0 && (
                 <MapContainer location={location} markers={markers} />
               )}

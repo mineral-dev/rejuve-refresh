@@ -108,7 +108,7 @@ export default function MenuPage({ slug, seo: initSeo }) {
     <main className="flex-grow bg-[url('/bg_menu.jpg')] flex flex-col">
       <MetaSeo data={seo} />
 
-      <section className="CategoryMobile bg-white py-4 lg:hidden">
+      <section className="CategoryMobile bg-white pt-3 sm:pt-4 lg:hidden">
         <Swiper            
           onSwiper={(swiper) => (swiperRef.current = swiper)}        
           modules={[Mousewheel, FreeMode]} 

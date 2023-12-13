@@ -142,21 +142,21 @@ export default function Header() {
         </AnimatePresence>
       </header> */}
 
-      <header className="Header fixed sm:sticky z-10 bottom-0 sm:bottom-[unset] sm:top-0 inset-x-0 bg-slate-100 backdrop-blur border-t sm:border-t-0 py-4">
-        <div className="wrapper flex justify-center divide-x-2">
+      <header className="Header fixed sm:sticky z-10 bottom-0 sm:bottom-[unset] sm:top-0 inset-x-0 bg-slate-100 backdrop-blur border-t sm:border-t-0 py-3 sm:py-4">
+        <div className="wrapper !px-0 flex justify-center divide-x-2">
           {menus.map((item, key) => (
             <Link
               key={key}
               href={item.attributes?.url}
-              className={`flex flex-col items-center space-y-1 hover:text-primary-600 px-8 group ${
+              className={`flex flex-col items-center space-y-1 hover:text-primary-600 px-3 sm:px-8 group ${
                 asPath === item.attributes?.url ? "text-primary-600" : ""
               }`}
             >
-              <span className="relative">
-                <span className="font-bold text-sm flex">{item.attributes?.title}</span>
+              <span className="relative text-center">
+                <span className="font-bold text-xs sm:text-sm lg:text-base whitespace-nowrap">{item.attributes?.title}</span>
                 {
                   key !== 0 && (
-                    <span className={`absolute -bottom-4 inset-x-0 content-[''] h-[4px] bg-primary-600 rounded-t-full transition-opacity duration-500 ${asPath === item.attributes?.url ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></span>
+                    <span className={`absolute -bottom-3 sm:-bottom-4 inset-x-0 content-[''] h-[4px] bg-primary-600 rounded-t-full transition-opacity duration-500 ${asPath === item.attributes?.url ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></span>
                   )
                 }
               </span>

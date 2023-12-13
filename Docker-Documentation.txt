@@ -1,7 +1,7 @@
 Docker Documentation
 
 1. Build docker
-$ docker build -t rejuve-refresh:tag .
+$ docker build -t bungandy/rejuve-refresh:tag .
 
 2. Push to Docker hub
 $ docker push bungandy/rejuve-refresh:tag

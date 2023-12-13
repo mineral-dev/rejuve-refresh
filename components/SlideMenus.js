@@ -16,7 +16,7 @@ export default function SlideMenus({ data, imageDb }) {
   // }, [data])
 
   return (
-    <section className="MenuSwiper flex-grow relative flex items-center lg:py-8">
+    <section className="MenuSwiper flex-grow relative flex items-center pb-10 sm:pb-0 md:py-8">
       <Swiper
         onSwiper={(swiper) => (swiperRef.current = swiper)}
         
@@ -34,7 +34,7 @@ export default function SlideMenus({ data, imageDb }) {
         modules={[EffectCoverflow, Pagination]}
         breakpoints={{
           0: {
-            slidesPerView: 1.3
+            slidesPerView: 1.7
           },
           640: {
             slidesPerView: 1.2

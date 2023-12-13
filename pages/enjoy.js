@@ -59,7 +59,7 @@ export default function Enjoy() {
 
       {post?.Showcase && post?.Showcase?.length > 0 && (
         <section className="bg-primary-100 pb-12 xl:py-12 mt-4 lg:mt-0">
-          <div className="wrapper grid lg:grid-cols-2 gap-4">
+          <div className="wrapper grid sm:grid-cols-2 gap-4">
             {post?.Showcase.map((item, key) => (
               <Card key={key} data={item} dbtable="enjoy" />
             ))}

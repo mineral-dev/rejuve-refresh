@@ -54,7 +54,7 @@ export default function Home() {
       <MetaSeo data={seo} />
 
       {post?.Image?.data?.attributes && (
-        <figure className="relative aspect-square lg:aspect-[16/5]">
+        <figure className="relative aspect-[16/5]">
           <ImageHandle
             style={{ objectFit: "cover" }}
             data={post?.Image?.data?.attributes}
@@ -73,7 +73,7 @@ export default function Home() {
       )}
 
       {post?.Showcase && post?.Showcase?.length > 0 && (
-        <section className="grid gap-y-8 py-12 xl:py-24">
+        <section className="grid gap-y-8 sm:gap-y-12 py-12 xl:py-24">
           {post?.Showcase.map((item, key) => (
             <IntroSection key={key} index={key} data={item} />
           ))}
@@ -149,7 +149,17 @@ export default function Home() {
                 <Swiper
                   onSwiper={(swiper) => (swiperRef.current = swiper)}
                   spaceBetween={50}
-                  slidesPerView={2}
+                  breakpoints={{
+                    0: {
+                      slidesPerView: 1.2
+                    },
+                    640: {
+                      slidesPerView: 2.2
+                    },
+                    1280: {
+                      slidesPerView: 2
+                    }
+                  }}
                   loop={true}
                   loopAddBlankSlides
                   centeredSlides={true}
@@ -191,14 +201,14 @@ export default function Home() {
 export function IntroSection({ index, data }) {
   return (
     <section
-      className={`wrapper flex   items-center gap-8 xl:gap-16 ${
+      className={`wrapper flex items-center gap-8 xl:gap-16 ${
         index % 2 === 1
-          ? "flex-col lg:flex-row-reverse"
-          : "flex-col lg:flex-row"
+          ? "flex-col sm:flex-row-reverse"
+          : "flex-col sm:flex-row"
       }`}
     >
       {data?.Image?.data?.attributes && (
-        <figure className="relative aspect-[4/5] w-full lg:w-5/12">
+        <figure className="relative aspect-[4/5] w-full sm:w-5/12">
           <ImageHandle
             style={{ objectFit: "cover" }}
             className="rounded-xl"
@@ -207,7 +217,7 @@ export function IntroSection({ index, data }) {
           />
         </figure>
       )}
-      <div className="lg:w-7/12 flex flex-col items-start space-y-6">
+      <div className="sm:w-7/12 flex flex-col items-start space-y-6">
         {data?.Title && <div className="h3 capitalize">{data?.Title}</div>}
         {data?.Description && (
           <article
@@ -244,12 +254,12 @@ export function MenuThumb({ data, index, isActive }) {
 
         {isActive && data?.Description && (
           <div className="flex flex-col justify-center">
-            <div className="h5 font-bold text-primary-600">{data?.Title}</div>
+            <div className="h5 font-bold text-primary-600 text-center md:text-left">{data?.Title}</div>
             <article
               dangerouslySetInnerHTML={{
                 __html: md().render(data.Description),
               }}
-              className="prose prose-headings:text-primary-600 prose-p:text-sm prose-p:sm:text-base mt-2"
+              className="prose prose-headings:text-primary-600 prose-p:text-sm prose-p:sm:text-base text-center md:text-left mt-2"
             ></article>
           </div>
         )}
