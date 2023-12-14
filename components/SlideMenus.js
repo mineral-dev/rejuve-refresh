@@ -16,11 +16,12 @@ export default function SlideMenus({ data, imageDb }) {
   // }, [data])
 
   return (
-    <section className="MenuSwiper flex-grow relative flex items-center md:py-12">
+    <section className="MenuSwiper w-full flex-grow relative flex items-center md:py-12">
       <Swiper
         onSwiper={(swiper) => (swiperRef.current = swiper)}
         effect={"coverflow"}
         centeredSlides={true}
+        centerInsufficientSlides={true}
         // coverflowEffect={{
         //   rotate: 50,
         //   stretch: 0,

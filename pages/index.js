@@ -120,16 +120,16 @@ export default function Home() {
 
       {post?.ShowcaseThird && (
         <section className="bg-[#FFF7E5] py-12 xl:py-24">
-          <div className="wrapper flex flex-col space-y-6 items-center justify-center">
+          <div className="wrapper-narrow flex flex-col space-y-6 items-center justify-center">
             {post?.ShowcaseThird?.Title && (
-              <div className="h2">{post?.ShowcaseThird?.Title}</div>
+              <div className="h2 sm:text-center">{post?.ShowcaseThird?.Title}</div>
             )}
             {post?.ShowcaseThird?.Description && (
               <article
                 dangerouslySetInnerHTML={{
                   __html: md().render(post?.ShowcaseThird?.Description),
                 }}
-                className="prose max-w-screen-md text-center"
+                className="prose max-w-screen-md sm:text-center"
               />
             )}
           </div>
@@ -153,16 +153,17 @@ export default function Home() {
                     0: {
                       slidesPerView: 1.2
                     },
-                    640: {
-                      slidesPerView: 2.2
+                    720: {
+                      slidesPerView: 1.9
                     },
-                    1280: {
-                      slidesPerView: 2
+                    1024: {
+                      slidesPerView: 1.9
                     }
                   }}
                   loop={true}
                   loopAddBlankSlides
                   centeredSlides={true}
+                  className="!overflow-visible"
                 >
                   {post?.Slideshow?.Slideshow?.map((item, key) => (
                     <SwiperSlide key={key} className="!h-auto">
@@ -239,8 +240,8 @@ export function MenuThumb({ data, index, isActive }) {
   return (
     <section className="MenuThumb relative lg:!h-full flex items-center">
       <div
-        className={`relative z-10 ${
-          isActive ? "grid lg:grid-cols-2 gap-x-2" : "grid"
+        className={`relative z-10 grid ${
+          isActive ? "lg:grid-cols-2 gap-x-2" : ""
         }`}
       >
         {data?.Image?.data?.attributes.url && (
@@ -252,8 +253,8 @@ export function MenuThumb({ data, index, isActive }) {
           </figure>
         )}
 
-        {isActive && data?.Description && (
-          <div className="flex flex-col justify-center">
+        {data?.Description && (
+          <div className={`flex flex-col justify-center ${isActive ? 'opacity-100' : 'opacity-0'}`}>
             <div className="h5 font-bold text-primary-600 text-center md:text-left">{data?.Title}</div>
             <article
               dangerouslySetInnerHTML={{
@@ -268,7 +269,7 @@ export function MenuThumb({ data, index, isActive }) {
       {isActive && (
         <>
           <svg
-            className="lg:hidden absolute z-0 top-0 left-1/2 -translate-x-1/2"
+            className="lg:hidden absolute z-0 top-0 h-full w-full translate-y-[10%]"
             xmlns="http://www.w3.org/2000/svg"
             width="231.001"
             height="261.801"
@@ -282,7 +283,7 @@ export function MenuThumb({ data, index, isActive }) {
             />
           </svg>
           <svg
-            className="hidden lg:block absolute z-0 top-0 h-full right-0"
+            className="hidden lg:block absolute z-0 top-0 h-full"
             xmlns="http://www.w3.org/2000/svg"
             width="587.311"
             height="370.565"
@@ -298,8 +299,8 @@ export function MenuThumb({ data, index, isActive }) {
         </>
       )}
 
-      {isActive && data?.Cta?.Link && (
-        <div className="absolute bottom-0 right-1/2 translate-x-1/2 justify-center mt-12">
+      {data?.Cta?.Link && (
+        <div className={`absolute bottom-0 right-1/2 translate-x-1/2 justify-center mt-12 transition-opacity ${isActive ? 'opacity-100' : 'opacity-0'}`}>
           <Link href={data?.Cta?.Link} className="btn-primary-outline">
             {data?.Cta?.Caption}
           </Link>

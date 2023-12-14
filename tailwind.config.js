@@ -7,11 +7,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
       fontFamily: {
         body: ["ibm-plex-sans", "Arial", "sans-serif"],
         akbar: ["Akbar", "Arial", "sans-serif"]
@@ -25,6 +20,7 @@ module.exports = {
         },
         black: "#2C1438",
         yellow: "#F8CA45",
+        orange: '#F8D5C0',
       },
       screens: {
         "3xl": "1952px", // 1920 - 32px (2rem)

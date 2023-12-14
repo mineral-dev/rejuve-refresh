@@ -2,6 +2,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { store } from "@/store/store";
 import "@/styles/globals.scss";
+import "@/styles/fonts.scss";
 import { Provider } from "react-redux";
 
 export default function App({ Component, pageProps }) {

@@ -105,7 +105,7 @@ export default function MenuPage({ slug, seo: initSeo }) {
   }, [fnbMenus, slug]);
 
   return (
-    <main className="flex-grow bg-[url('/bg_menu.jpg')] flex flex-col">
+    <main className="flex-grow bg-orange flex flex-col">
       <MetaSeo data={seo} />
 
       <section className="CategoryMobile bg-white pt-3 sm:pt-4 lg:hidden">
@@ -246,19 +246,30 @@ export default function MenuPage({ slug, seo: initSeo }) {
         </main>
       </section>
 
-
-      {slideMenu.length > 0 ? (
-        <SlideMenus data={slideMenu} imageDb="fnb" />
-      ) : (
-        <section className="flex-grow flex justify-center items-center h-80 my-24 w-auto">
-          <div className="flex flex-col space-y-4 items-center">
-            <span className="text-white font-bold">We are preparing something new. Stay Tune.</span>
-            <Link className="btn-white-outline mx-4 mb-4" href="/menu">
-              Show All
-            </Link>
-          </div>
-        </section>
-      )}
+      {
+        slideMenu.length === 0
+        ? (
+          <section className="flex-grow flex justify-center items-center h-80 my-24 w-auto">
+            <div className="flex flex-col space-y-4 items-center">
+              <span className="text-white font-bold">We are preparing something new. Stay Tune.</span>
+              <Link className="btn-white-outline mx-4 mb-4" href="/menu">
+                Show All
+              </Link>
+            </div>
+          </section>
+        )
+        : slideMenu.length === 1
+          ? (
+            <section className="flex-grow relative flex items-center justify-center py-6 md:py-12">
+              <div className="relative w-5/6">
+                <ImageWidth data={slideMenu[0].Image} dbtable="fnb" />
+              </div>
+            </section>
+          )
+          : <SlideMenus data={slideMenu} imageDb="fnb" />
+      }
     </main>
   );
 }
+
+// <ImageWidth data={slideMenu.Image} dbtable="fnb" />
