@@ -256,8 +256,8 @@ export default function ButtonPull() {
   };
 
   return (
-    <button onClick={handleTap} className="text-xs font-mono">
-      {tap}-PULL
+    <button onClick={handleTap} className="text-xs font-mono opacity-20 h-11 w-11">
+      {tap}
     </button>
   );
 }

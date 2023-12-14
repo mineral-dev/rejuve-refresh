@@ -122,9 +122,9 @@ export default function MenuPage({ slug, seo: initSeo }) {
               slidesPerView: 2.5
             },
             414: {
-              slidesPerView: 3
+              slidesPerView: 2.7
             },
-            640: {
+            720: {
               slidesPerView: 4.8
             }
           }}

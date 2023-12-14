@@ -63,108 +63,28 @@ export default function Header() {
   }, [data, isError, error]);
 
   return (
-    <>
-      {/* <header className="HeaderMobile sticky z-20 top-0 bg-primary-200 backdrop-blur lg:hidden">
-        <div className="flex items-center justify-center h-11 pl-4">
-          <Link href="/">
-            <LogoRefresh classExtra="fill-primary-600 h-7" />
-          </Link>
-          <button
-            onClick={handleMobileMenu}
-            className="w-11 h-11 flex items-center justify-center absolute right-0"
+    <header className="Header sticky z-10 top-0 inset-x-0 bg-slate-100 backdrop-blur border-t sm:border-t-0 py-3 sm:py-4">
+      <div className="wrapper !px-0 flex justify-center divide-x-2">
+        {menus.map((item, key) => (
+          <Link
+            key={key}
+            href={item.attributes?.url}
+            className={`flex flex-col items-center space-y-1 hover:text-primary-600 px-3 sm:px-8 group ${
+              asPath === item.attributes?.url ? "text-primary-600" : ""
+            }`}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="11.442"
-              height="7.313"
-              viewBox="0 0 11.442 7.313"
-              className={`transition ${isMobileMenu ? "-rotate-180" : ""}`}
-            >
-              <path
-                id="mainMenuDownNonHover"
-                d="M.882,2.722,5.006,6.846a1.6,1.6,0,0,0,2.255,0l4.124-4.124A1.594,1.594,0,0,0,10.257,0H2.01A1.6,1.6,0,0,0,.882,2.722Z"
-                transform="translate(-0.412)"
-                fill="#5a2e90"
-              />
-            </svg>
-          </button>
-        </div>
-        <AnimatePresence>
-          {isMobileMenu && (
-            <motion.nav
-              initial={{
-                opacity: 0,
-                y: -16,
-                transition: {
-                  duration: 0.3,
-                },
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              exit={{
-                opacity: 0,
-                y: -16,
-              }}
-              className="MobileMenu bg-primary-100 grid divide-y divide-black/10 max-h-[calc(100dvh_-_44px)] overflow-y-auto"
-            >
-              {menus.map((item, key) => (
-                <Link key={key} 
-                  className={`relative flex items-center justify-between pl-4 h-11 sm:h-14`}
-                  href={item?.attributes?.url}
-                  onClick={() => handleMobileMenu()}
-                >
-                  <span
-                    className="flex items-center space-x-2 cursor-pointer"
-                  >
-                    <span className="w-8 flex justify-center [&>svg]:h-7">
-                      {item.attributes?.Image?.data?.attributes && (
-                        <figure className="flex flex-grow relative aspect-square">
-                          <ImageFill
-                            style={{ objectFit: "contain" }}
-                            data={item.attributes?.Image?.data?.attributes}
-                            dbtable="menus"
-                          />
-                        </figure>
-                      )}
-                    </span>
-                    {item?.attributes?.title && (
-                      <span className="font-bold">
-                        {item?.attributes?.title}
-                      </span>
-                    )}
-                  </span>
-                </Link>
-              ))}
-            </motion.nav>
-          )}
-        </AnimatePresence>
-      </header> */}
-
-      <header className="Header fixed sm:sticky z-10 bottom-0 sm:bottom-[unset] sm:top-0 inset-x-0 bg-slate-100 backdrop-blur border-t sm:border-t-0 py-3 sm:py-4">
-        <div className="wrapper !px-0 flex justify-center divide-x-2">
-          {menus.map((item, key) => (
-            <Link
-              key={key}
-              href={item.attributes?.url}
-              className={`flex flex-col items-center space-y-1 hover:text-primary-600 px-3 sm:px-8 group ${
-                asPath === item.attributes?.url ? "text-primary-600" : ""
-              }`}
-            >
-              <span className="relative text-center">
-                <span className="font-bold text-xs sm:text-sm lg:text-base whitespace-nowrap">{item.attributes?.title}</span>
-                {
-                  key !== 0 && (
-                    <span className={`absolute -bottom-3 sm:-bottom-4 inset-x-0 content-[''] h-[4px] bg-primary-600 rounded-t-full transition-opacity duration-500 ${asPath === item.attributes?.url ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></span>
-                  )
-                }
-              </span>
-            </Link>
-          ))}
-        </div>
-      </header>
-    </>
+            <span className="relative text-center">
+              <span className="font-bold text-xs sm:text-sm lg:text-base whitespace-nowrap">{item.attributes?.title}</span>
+              {
+                key !== 0 && (
+                  <span className={`absolute -bottom-3 sm:-bottom-4 inset-x-0 content-[''] h-[4px] bg-primary-600 rounded-t-full transition-opacity duration-500 ${asPath === item.attributes?.url ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}></span>
+                )
+              }
+            </span>
+          </Link>
+        ))}
+      </div>
+    </header>
   );
 }
 

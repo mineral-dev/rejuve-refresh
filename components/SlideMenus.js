@@ -16,31 +16,53 @@ export default function SlideMenus({ data, imageDb }) {
   // }, [data])
 
   return (
-    <section className="MenuSwiper flex-grow relative flex items-center pb-10 sm:pb-0 md:py-8">
+    <section className="MenuSwiper flex-grow relative flex items-center md:py-12">
       <Swiper
         onSwiper={(swiper) => (swiperRef.current = swiper)}
-        
         effect={"coverflow"}
-        grabCursor={true}
         centeredSlides={true}
-        coverflowEffect={{
-          rotate: 50,
-          stretch: 0,
-          depth: 100,
-          modifier: 1,
-          slideShadows: true,
-        }}
+        // coverflowEffect={{
+        //   rotate: 50,
+        //   stretch: 0,
+        //   depth: 500,
+        //   modifier: 1,
+        //   slideShadows: true,
+        // }}
         // pagination={true}
         modules={[EffectCoverflow, Pagination]}
         breakpoints={{
           0: {
-            slidesPerView: 1.7
+            slidesPerView: 1.2,
+            grabCursor: true,
+            coverflowEffect: {
+              rotate: 70,
+              stretch: 0,
+              depth: 500,
+              modifier: 1,
+              slideShadows: true,
+            }
           },
-          640: {
-            slidesPerView: 1.2
+          720: {
+            slidesPerView: 1.3,
+            grabCursor: true,
+            coverflowEffect: {
+              rotate: 80,
+              stretch: 0,
+              depth: 500,
+              modifier: 1,
+              slideShadows: true,
+            }
           },
-          1280: {
-            slidesPerView: 2.8
+          1024: {
+            slidesPerView: 2.2,
+            grabCursor: false,
+            coverflowEffect: {
+              rotate: 40,
+              stretch: 0,
+              depth: 500,
+              modifier: 1,
+              slideShadows: true,
+            }
           }
         }}
       >
