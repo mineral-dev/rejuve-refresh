@@ -157,16 +157,15 @@ export default function MenuPage({ slug, seo: initSeo }) {
         </Swiper>
       </section>
 
-      <section className="CategoryDesktop bg-slate-200 hidden lg:grid grid-cols-4">
-        <aside className="ParentCategory flex flex-col justify-between bg-white">
+      <section className="CategoryDesktop bg-slate-200 hidden lg:grid grid-cols-4 border-t border-slate-300/50">
+        <aside className="ParentCategory flex flex-col justify-between bg-white -mt-px">
           <div className="grid">
             {categories.map((item, key) => (
               <button
                 onClick={() => setActiveMenu(item)}
                 key={key}
-                className={`flex items-center justify-between text-black text-left h-14 px-8 transition duration-500 hover:bg-slate-200 ${
-                  slug === item.attributes?.Slug ? "bg-primary-200" : ""
-                }`}
+                className={`flex items-center justify-between text-black text-left h-14 px-8 transition duration-500 hover:bg-slate-200 
+                ${ activeMenu.attributes.Slug === item.attributes?.Slug ? "bg-slate-200 border-y border-slate-300/50" : "" }`}
               >
                 <span className="font-bold">{item.attributes?.Title}</span>
                 <svg

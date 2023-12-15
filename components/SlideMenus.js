@@ -38,7 +38,7 @@ export default function SlideMenus({ data, imageDb }) {
             coverflowEffect: {
               rotate: 70,
               stretch: 0,
-              depth: 500,
+              depth: 100,
               modifier: 1,
               slideShadows: true,
             }
@@ -49,7 +49,7 @@ export default function SlideMenus({ data, imageDb }) {
             coverflowEffect: {
               rotate: 80,
               stretch: 0,
-              depth: 500,
+              depth: 100,
               modifier: 1,
               slideShadows: true,
             }
@@ -58,13 +58,24 @@ export default function SlideMenus({ data, imageDb }) {
             slidesPerView: 2.2,
             grabCursor: false,
             coverflowEffect: {
-              rotate: 40,
+              rotate: 70,
               stretch: 0,
-              depth: 500,
+              depth: 100,
               modifier: 1,
               slideShadows: true,
             }
-          }
+          },
+          1280: {
+            slidesPerView: 3,
+            grabCursor: false,
+            coverflowEffect: {
+              rotate: 70,
+              stretch: 0,
+              depth: 100,
+              modifier: 1,
+              slideShadows: true,
+            }
+          },
         }}
       >
         {data?.map((item, key) => (
