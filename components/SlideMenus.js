@@ -43,18 +43,18 @@ export default function SlideMenus({ data, imageDb }) {
               slideShadows: true,
             }
           },
-          720: {
+          719: {
             slidesPerView: 1.3,
             grabCursor: true,
             coverflowEffect: {
-              rotate: 80,
+              rotate: 50,
               stretch: 0,
               depth: 100,
               modifier: 1,
               slideShadows: true,
             }
           },
-          1024: {
+          1023: {
             slidesPerView: 2.2,
             grabCursor: false,
             coverflowEffect: {
@@ -65,7 +65,7 @@ export default function SlideMenus({ data, imageDb }) {
               slideShadows: true,
             }
           },
-          1280: {
+          1279: {
             slidesPerView: 3,
             grabCursor: false,
             coverflowEffect: {

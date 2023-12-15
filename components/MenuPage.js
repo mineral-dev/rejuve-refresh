@@ -124,7 +124,7 @@ export default function MenuPage({ slug, seo: initSeo }) {
             414: {
               slidesPerView: 2.7
             },
-            720: {
+            719: {
               slidesPerView: 4.8
             }
           }}
@@ -250,8 +250,8 @@ export default function MenuPage({ slug, seo: initSeo }) {
         ? (
           <section className="flex-grow flex justify-center items-center h-80 my-24 w-auto">
             <div className="flex flex-col space-y-4 items-center">
-              <span className="text-white font-bold">We are preparing something new. Stay Tune.</span>
-              <Link className="btn-white-outline mx-4 mb-4" href="/menu">
+              <span className="text-primary-900 font-bold">We are preparing something new. Stay Tune.</span>
+              <Link className="btn-primary-outline mx-4 mb-4" href="/menu">
                 Show All
               </Link>
             </div>

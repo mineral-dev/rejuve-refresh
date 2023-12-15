@@ -153,10 +153,10 @@ export default function Home() {
                     0: {
                       slidesPerView: 1.2
                     },
-                    720: {
+                    719: {
                       slidesPerView: 1.9
                     },
-                    1024: {
+                    1023: {
                       slidesPerView: 1.9
                     }
                   }}
