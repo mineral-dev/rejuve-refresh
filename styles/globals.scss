@@ -75,6 +75,7 @@ h5,
 
 .prose {
   @apply max-w-none;
+  @apply prose-headings:font-body;
   @apply prose-h1:sm:text-2xl prose-h1:lg:text-5xl;
   @apply prose-h2:sm:text-2xl prose-h2:lg:text-4xl;
   @apply prose-h3:sm:text-2xl prose-h3:lg:text-3xl;

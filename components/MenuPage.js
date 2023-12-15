@@ -261,7 +261,7 @@ export default function MenuPage({ slug, seo: initSeo }) {
         : slideMenu.length === 1
           ? (
             <section className="flex-grow relative flex items-center justify-center py-6 md:py-12">
-              <div className="relative w-5/6">
+              <div className="relative w-5/6 lg:w-3/6 flex justify-center">
                 <ImageWidth data={slideMenu[0].Image} dbtable="fnb" />
               </div>
             </section>
