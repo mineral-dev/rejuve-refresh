@@ -18,7 +18,7 @@ RUN git config --global user.email "rejuve-refresh@rejuve.co.id" && \
 WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json to the working directory
-# COPY package*.json ./
+COPY package*.json ./
 
 # Uncomment the following lines to add a daily git pull cron job
 RUN echo "0 7 * * * cd /usr/src/app && git checkout . && git pull" > /etc/crontabs/appuser
@@ -28,14 +28,14 @@ RUN crontab /etc/crontabs/appuser
 RUN touch /var/log/cron.log
 
 # Clone the Next.js project from GitHub
-RUN git clone https://github.com/mineral-dev/rejuve-refresh.git .
+# RUN git clone https://github.com/mineral-dev/rejuve-refresh.git .
 
 # Install dependencies
 RUN npm install
 
 # Copy the local project files into the container
-# COPY . .
-COPY .env.local .
+COPY . .
+#COPY .env.local .
 
 # Build the Next.js application
 RUN npm run build
