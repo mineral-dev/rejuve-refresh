@@ -2,7 +2,8 @@ import { useRef } from "react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
-import { EffectCoverflow, Pagination } from "swiper/modules";
+import 'swiper/css/zoom';
+import { EffectCoverflow, Pagination, Zoom } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import BtnNext from "./BtnNext";
 import BtnPrev from "./BtnPrev";
@@ -16,21 +17,13 @@ export default function SlideMenus({ data, imageDb }) {
   // }, [data])
 
   return (
-    <section className="MenuSwiper w-full flex-grow relative flex items-center md:py-12">
+    <section className="MenuSwiper w-full flex-grow relative flex items-center">
       <Swiper
         onSwiper={(swiper) => (swiperRef.current = swiper)}
         effect={"coverflow"}
         centeredSlides={true}
         centerInsufficientSlides={true}
-        // coverflowEffect={{
-        //   rotate: 50,
-        //   stretch: 0,
-        //   depth: 500,
-        //   modifier: 1,
-        //   slideShadows: true,
-        // }}
-        // pagination={true}
-        modules={[EffectCoverflow, Pagination]}
+        modules={[EffectCoverflow, Pagination, Zoom]}
         breakpoints={{
           0: {
             slidesPerView: 1.2,
@@ -77,10 +70,11 @@ export default function SlideMenus({ data, imageDb }) {
             }
           },
         }}
+        zoom={true}
       >
         {data?.map((item, key) => (
           <SwiperSlide key={key}>
-            <figure className="relative w-full flex items-center justify-center">
+            <figure className="swiper-zoom-container relative w-full flex items-center justify-center md:py-12">
               {item.Image && <ImageWidth data={item.Image} dbtable={imageDb} />}
             </figure>
           </SwiperSlide>
@@ -101,21 +95,3 @@ export default function SlideMenus({ data, imageDb }) {
     </section>
   );
 }
-
-const sliderMenu = [
-  {
-    image: "/img/menu/menu_one.jpg",
-  },
-  {
-    image: "/img/menu/menu_one.jpg",
-  },
-  {
-    image: "/img/menu/menu_one.jpg",
-  },
-  {
-    image: "/img/menu/menu_one.jpg",
-  },
-  {
-    image: "/img/menu/menu_one.jpg",
-  },
-];
