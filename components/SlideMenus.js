@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
@@ -13,11 +13,15 @@ export default function SlideMenus({ data, imageDb }) {
   const swiperRef = useRef();
 
   // useEffect(() => {
-  //    swiperRef.current?.autoplay.start()
+  //   if (swiperRef?.current) {
+  //     swiperRef.current?.autoplay?.start() 
+  //   }
   // }, [data])
 
+  // console.log(data)
   return (
-    <section className="MenuSwiper w-full flex-grow relative flex items-center">
+    <section className="MenuSwiper w-full flex-grow  flex items-center">
+      <div className="relative w-full h-full">
       <Swiper
         onSwiper={(swiper) => (swiperRef.current = swiper)}
         effect={"coverflow"}
@@ -75,7 +79,7 @@ export default function SlideMenus({ data, imageDb }) {
         {data?.map((item, key) => (
           <SwiperSlide key={key}>
             <figure className="swiper-zoom-container relative w-full flex items-center justify-center md:py-12">
-              {item.Image && <ImageWidth data={item.Image} dbtable={imageDb} />}
+              {item?.Image && <ImageWidth data={item.Image} dbtable={imageDb} />}
             </figure>
           </SwiperSlide>
         ))}
@@ -92,6 +96,8 @@ export default function SlideMenus({ data, imageDb }) {
       >
         <BtnNext />
       </button>
+      </div>
+      
     </section>
   );
 }

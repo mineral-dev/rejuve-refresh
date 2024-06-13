@@ -1,6 +1,6 @@
 import db from "@/db/db";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function ImageWidth({
   className,
@@ -17,7 +17,7 @@ export default function ImageWidth({
     }
   };
 
-  const fetchImg = async (data) => {
+  const fetchImg = useCallback( async () => {
     await fetch(`${process.env.NEXT_PUBLIC_RESTAPI_URL}`)
       .then((result) => {
         setUrlImg(`${process.env.NEXT_PUBLIC_RESTAPI_URL}${data?.url}`);
@@ -26,10 +26,10 @@ export default function ImageWidth({
         getUrlImgBlob(data?.name);
         console.warn(e);
       });
-  };
+  },[data]);
 
   useEffect(() => {
-    fetchImg(data);
+    fetchImg();
   }, [data]);
 
   return urlImg ? (

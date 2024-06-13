@@ -12,6 +12,7 @@ import MetaSeo from "./MetaHead";
 import ImageWidth from "./ImageWidth";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Mousewheel } from "swiper/modules"
+import Menus from "./Menus";
 
 
 export default function MenuPage({ slug, seo: initSeo }) {
@@ -93,6 +94,7 @@ export default function MenuPage({ slug, seo: initSeo }) {
       const result = fnbMenus.filter((item) => item.Slug === slug);
       if (result?.length > 0) {
         setSlideMenu(result);
+        console.log(result,'result')
         setSeo(result[0]?.Seo);
       } else {
         setSlideMenu([]);
@@ -245,28 +247,7 @@ export default function MenuPage({ slug, seo: initSeo }) {
         </main>
       </section>
 
-      {
-        slideMenu.length === 0
-        ? (
-          <section className="flex-grow flex justify-center items-center h-80 my-24 w-auto">
-            <div className="flex flex-col space-y-4 items-center">
-              <span className="text-primary-900 font-bold">We are preparing something new. Stay Tune.</span>
-              <Link className="btn-primary-outline mx-4 mb-4" href="/menu">
-                Show All
-              </Link>
-            </div>
-          </section>
-        )
-        : slideMenu.length === 1
-          ? (
-            <section className="flex-grow relative flex items-center justify-center py-6 md:py-12">
-              <div className="relative w-5/6 lg:w-3/6 flex justify-center">
-                <ImageWidth data={slideMenu[0].Image} dbtable="fnb" />
-              </div>
-            </section>
-          )
-          : <SlideMenus data={slideMenu} imageDb="fnb" />
-      }
+      <Menus data={slideMenu} />
     </main>
   );
 }
