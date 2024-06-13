@@ -12,11 +12,11 @@ import ImageWidth from "./ImageWidth";
 export default function SlideMenus({ data, imageDb }) {
   const swiperRef = useRef();
 
-  // useEffect(() => {
-  //   if (swiperRef?.current) {
-  //     swiperRef.current?.autoplay?.start() 
-  //   }
-  // }, [data])
+  useEffect(() => {
+    if (swiperRef?.current) {
+      swiperRef.current?.autoplay?.start() 
+    }
+  }, [data, swiperRef])
 
   // console.log(data)
   return (
@@ -63,7 +63,7 @@ export default function SlideMenus({ data, imageDb }) {
             }
           },
           1279: {
-            slidesPerView: 3,
+            slidesPerView: data?.length === 2 ? 2 : 3,
             grabCursor: false,
             coverflowEffect: {
               rotate: 70,
