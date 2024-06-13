@@ -94,7 +94,7 @@ export default function MenuPage({ slug, seo: initSeo }) {
       const result = fnbMenus.filter((item) => item.Slug === slug);
       if (result?.length > 0) {
         setSlideMenu(result);
-        console.log(result,'result')
+        // console.log(result,'result')
         setSeo(result[0]?.Seo);
       } else {
         setSlideMenu([]);
