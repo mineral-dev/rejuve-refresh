@@ -1,5 +1,4 @@
 import db from "@/db/db";
-import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 
 export default function ImageWidth({
@@ -33,14 +32,14 @@ export default function ImageWidth({
   }, [data]);
 
   return urlImg ? (
-    <Image
+    <img
       className={className}
       style={style}
       src={urlImg}
       alt={data?.name}
-      priority={true}
       width={data?.width}
       height={data?.height}
+      loading="lazy"
     />
   ) : (
     <div></div>

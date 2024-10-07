@@ -1,5 +1,4 @@
 import db from "@/db/db";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function ImageFill({
@@ -34,14 +33,13 @@ export default function ImageFill({
   }, [data]);
 
   return urlImg ? (
-    <Image
+    <image
       className={className}
       style={style}
       src={urlImg}
       alt={data?.name}
-      priority={true}
-      sizes="320 640 750"
       fill
+      loading="lazy"
     />
   ) : (
     <div></div>
